@@ -126,6 +126,14 @@ public class CommandWrapperBuilder {
         return this;
     }
 
+    public CommandWrapperBuilder saveBSEData(final long id) {
+        this.actionName = "SAVE";
+        this.entityName = "IQDATA";
+        this.entityId = id;
+        this.href = "/bseIntegration/save";
+        return this;
+    }
+
     public CommandWrapperBuilder addClientAddress(final long clientId, final long addressTypeId) {
         this.actionName = "CREATE";
         this.entityName = "ADDRESS";
