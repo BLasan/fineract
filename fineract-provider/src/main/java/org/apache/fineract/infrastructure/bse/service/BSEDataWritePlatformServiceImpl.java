@@ -19,6 +19,8 @@
 package org.apache.fineract.infrastructure.bse.service;
 
 import javax.transaction.Transactional;
+
+import org.apache.fineract.infrastructure.bse.data.BSEIPOData;
 import org.apache.fineract.infrastructure.core.api.JsonCommand;
 import org.apache.fineract.infrastructure.core.data.CommandProcessingResult;
 import org.apache.fineract.infrastructure.security.service.PlatformSecurityContext;
@@ -34,24 +36,32 @@ import java.net.URL;
 public class BSEDataWritePlatformServiceImpl implements BSEDataWritePlatformService {
 
     private final PlatformSecurityContext context;
+    private final BSEIPODataReadPlatformService BSEIPODataReadPlatformService;
 
     @Autowired
-    public BSEDataWritePlatformServiceImpl(final PlatformSecurityContext context) {
+    public BSEDataWritePlatformServiceImpl(final PlatformSecurityContext context,
+                                           final BSEIPODataReadPlatformService BSEIPODataReadPlatformService) {
         this.context = context;
+        this.BSEIPODataReadPlatformService = BSEIPODataReadPlatformService;
     }
 
     @Override
     @Transactional
-    public CommandProcessingResult getBSEData(JsonCommand command) {
+    public CommandProcessingResult getBSEIPOData(JsonCommand command) {
         return CommandProcessingResult.empty();
     }
 
     @Override
     @Transactional
     public CommandProcessingResult saveBSEData(Long groupId, JsonCommand command) {
-        String baseAPIURL = getBaseAPIURL();
+        BSEIPOData bseipoData = this.BSEIPODataReadPlatformService.getBSEIPOData();
+//        String memberCode = bseipoData.getMemberCode();
+//        String loginId = bseipoData.getLoginId();
+//        String password = bseipoData.getPassword();
+//        String ibbsid = bseipoData.getIbbsId();
+
         try{
-            URL url = new URL("http://example.com");
+            URL url = new URL("");
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setRequestMethod("GET");
             con.setConnectTimeout(5000);
@@ -63,12 +73,16 @@ public class BSEDataWritePlatformServiceImpl implements BSEDataWritePlatformServ
         return CommandProcessingResult.empty();
     }
 
-    public String authenticateUser() {
+    public String userAuthenticate() {
         return null;
     }
 
-    public String getBaseAPIURL() {
-        return null;
-    }
+//    public BSEIPOData getIPOData() {
+//        return new BSEIPOData();
+//    }
+
+//    public BSEBidData getBidData() {
+//        return new BSEBidData();
+//    }
 
 }

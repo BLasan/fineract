@@ -24,7 +24,7 @@ import org.apache.fineract.infrastructure.core.data.CommandProcessingResult;
 public interface BSEDataWritePlatformService {
 
     // gets BSE Data from CreditBureau
-    CommandProcessingResult getBSEData(JsonCommand command);
+    CommandProcessingResult getBSEIPOData(JsonCommand command);
 
     // saves fetched BSE Data to database
     CommandProcessingResult saveBSEData(Long groupId, JsonCommand command);

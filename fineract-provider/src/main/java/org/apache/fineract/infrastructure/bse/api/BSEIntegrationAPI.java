@@ -28,7 +28,7 @@ import javax.ws.rs.core.MediaType;
 import org.apache.fineract.commands.domain.CommandWrapper;
 import org.apache.fineract.commands.service.CommandWrapperBuilder;
 import org.apache.fineract.commands.service.PortfolioCommandSourceWritePlatformService;
-import org.apache.fineract.infrastructure.bse.data.BSEData;
+import org.apache.fineract.infrastructure.bse.data.BSEIPOData;
 import org.apache.fineract.infrastructure.core.api.ApiRequestParameterHelper;
 import org.apache.fineract.infrastructure.core.data.CommandProcessingResult;
 import org.apache.fineract.infrastructure.core.serialization.DefaultToApiJsonSerializer;
@@ -48,13 +48,13 @@ public class BSEIntegrationAPI {
     private final PlatformSecurityContext context;
     private final PortfolioCommandSourceWritePlatformService commandsSourceWritePlatformService;
     private final ApiRequestParameterHelper apiRequestParameterHelper;
-    private final DefaultToApiJsonSerializer<BSEData> toApiJsonSerializer;
+    private final DefaultToApiJsonSerializer<BSEIPOData> toApiJsonSerializer;
     private static final Logger LOG = LoggerFactory.getLogger(CreditBureauIntegrationAPI.class);
 
     @Autowired
     public BSEIntegrationAPI(final PlatformSecurityContext context,
             final PortfolioCommandSourceWritePlatformService commandsSourceWritePlatformService,
-            final ApiRequestParameterHelper apiRequestParameterHelper, final DefaultToApiJsonSerializer<BSEData> toApiJsonSerializer) {
+            final ApiRequestParameterHelper apiRequestParameterHelper, final DefaultToApiJsonSerializer<BSEIPOData> toApiJsonSerializer) {
         this.context = context;
         this.commandsSourceWritePlatformService = commandsSourceWritePlatformService;
         this.apiRequestParameterHelper = apiRequestParameterHelper;
