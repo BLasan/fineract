@@ -2,24 +2,23 @@ package org.apache.fineract.infrastructure.bse.data;
 
 public class BSEConfigurationData {
 
-    private final String memberCode;
-    private final String loginId;
+    private final Integer memberId;
+    private final String userName;
     private final String password;
-    private final String ibbsId;
+    private final String baseAPIURL;
 
-    public BSEConfigurationData(final String memberCode, final String loginId, final String password,
-                                final String ibbsId) {
-        this.memberCode = memberCode;
-        this.loginId = loginId;
+    public BSEConfigurationData(final Integer memberId, final String baseAPIURL, final String password, final String userName) {
+        this.memberId = memberId;
         this.password = password;
-        this.ibbsId = ibbsId;
+        this.baseAPIURL = baseAPIURL;
+        this.userName = userName;
     }
 
-    public String getMemberCode() { return this.memberCode; }
+    public Integer getMemberId() { return this.memberId; }
 
-    public String getLoginId() { return this.loginId; }
+    public String getUserName() { return this.userName; }
 
     public String getPassword() { return this.password; }
 
-    public String getIbbsId() { return this.ibbsId; }
+    public String getBaseAPIURL() { return this.baseAPIURL; }
 }

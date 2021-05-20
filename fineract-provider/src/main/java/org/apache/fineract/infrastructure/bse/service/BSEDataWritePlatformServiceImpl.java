@@ -20,6 +20,7 @@ package org.apache.fineract.infrastructure.bse.service;
 
 import javax.transaction.Transactional;
 
+import org.apache.fineract.infrastructure.bse.data.BSEConfigurationData;
 import org.apache.fineract.infrastructure.bse.data.BSEIPOData;
 import org.apache.fineract.infrastructure.core.api.JsonCommand;
 import org.apache.fineract.infrastructure.core.data.CommandProcessingResult;
@@ -36,13 +37,13 @@ import java.net.URL;
 public class BSEDataWritePlatformServiceImpl implements BSEDataWritePlatformService {
 
     private final PlatformSecurityContext context;
-    private final BSEIPODataReadPlatformService BSEIPODataReadPlatformService;
+    private final BSEConfigurationDataReadPlatformService BSEConfigurationDataReadPlatformService;
 
     @Autowired
     public BSEDataWritePlatformServiceImpl(final PlatformSecurityContext context,
-                                           final BSEIPODataReadPlatformService BSEIPODataReadPlatformService) {
+                                           final BSEConfigurationDataReadPlatformService BSEConfigurationDataReadPlatformService) {
         this.context = context;
-        this.BSEIPODataReadPlatformService = BSEIPODataReadPlatformService;
+        this.BSEConfigurationDataReadPlatformService = BSEConfigurationDataReadPlatformService;
     }
 
     @Override
@@ -54,11 +55,11 @@ public class BSEDataWritePlatformServiceImpl implements BSEDataWritePlatformServ
     @Override
     @Transactional
     public CommandProcessingResult saveBSEData(Long groupId, JsonCommand command) {
-        BSEIPOData bseipoData = this.BSEIPODataReadPlatformService.getBSEIPOData();
-//        String memberCode = bseipoData.getMemberCode();
-//        String loginId = bseipoData.getLoginId();
-//        String password = bseipoData.getPassword();
-//        String ibbsid = bseipoData.getIbbsId();
+        BSEConfigurationData bseConfigurationData = this.BSEConfigurationDataReadPlatformService.getBSEConfigurationData();
+        Integer memberId = bseConfigurationData.getMemberId();
+        String baseAPIURL = bseConfigurationData.getBaseAPIURL();
+        String password = bseConfigurationData.getPassword();
+        String userName = bseConfigurationData.getUserName();
 
         try{
             URL url = new URL("");

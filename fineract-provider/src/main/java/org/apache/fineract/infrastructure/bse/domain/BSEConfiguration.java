@@ -18,49 +18,47 @@
  */
 package org.apache.fineract.infrastructure.bse.domain;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import org.apache.fineract.infrastructure.core.api.JsonCommand;
 import org.apache.fineract.infrastructure.core.domain.AbstractPersistableCustom;
 
 @Entity
-@Table(name = "m_bse_data")
-public class BSE extends AbstractPersistableCustom {
+@Table(name = "m_bse_configuration")
+public class BSEConfiguration extends AbstractPersistableCustom {
 
-    private String bseName;
-    private long bseId;
+    @Column(name = "userName")
+    private String userName;
 
-    public BSE(String bseName, long bseId) {
-        this.bseName = bseName;
-        this.bseId = bseId;
+    @Column(name = "password")
+    private String password;
+
+    @Column(name = "baseAPIURL")
+    private String baseAPIURL;
+
+    @Column(name = "memberId")
+    private Integer memberId;
+
+    public BSEConfiguration(String userName, String password, String baseAPIURL, Integer memberId) {
+        this.baseAPIURL = baseAPIURL;
+        this.userName = userName;
+        this.password = password;
+        this.memberId = memberId;
     }
 
-    public BSE() {
+    public BSEConfiguration() {
 
     }
 
-    public static BSE fromJson(final JsonCommand command) {
-
-        final String bseName = command.stringValueOfParameterNamed("name");
-        final long bseId = Long.parseLong(command.stringValueOfParameterNamed("id"));
-
-        return new BSE(bseName, bseId);
-
+    public String getUserName() {
+        return this.userName;
     }
 
-    public String getBseName() {
-        return this.bseName;
-    }
+    public String getPassword() { return this.password; }
 
-    public void setBseName(String bseName) {
-        this.bseName = bseName;
-    }
+    public String getBaseAPIURL() { return this.baseAPIURL; }
 
-    public long getBseId() {
-        return this.bseId;
-    }
+    public Integer getMemberId() { return this.memberId; }
 
-    public void setBseId(long bseId) {
-        this.bseId = bseId;
-    }
 }
