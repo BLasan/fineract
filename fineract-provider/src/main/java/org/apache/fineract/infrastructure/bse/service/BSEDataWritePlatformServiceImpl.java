@@ -20,8 +20,10 @@ package org.apache.fineract.infrastructure.bse.service;
 
 import javax.transaction.Transactional;
 
-import org.apache.fineract.infrastructure.bse.data.BSEConfigurationData;
-import org.apache.fineract.infrastructure.bse.data.BSEIPOData;
+import org.apache.fineract.infrastructure.bse.domain.BSEConfiguration;
+import org.apache.fineract.infrastructure.bse.domain.BSEIQRequest;
+import org.apache.fineract.infrastructure.bse.exception.BSEConfigurationNotFoundException;
+import org.apache.fineract.infrastructure.bse.exception.BSEDataNotFoundException;
 import org.apache.fineract.infrastructure.core.api.JsonCommand;
 import org.apache.fineract.infrastructure.core.data.CommandProcessingResult;
 import org.apache.fineract.infrastructure.security.service.PlatformSecurityContext;
@@ -32,18 +34,22 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Collection;
 
 @Service
 public class BSEDataWritePlatformServiceImpl implements BSEDataWritePlatformService {
 
     private final PlatformSecurityContext context;
-    private final BSEConfigurationDataReadPlatformService BSEConfigurationDataReadPlatformService;
+    private final BSEConfigurationDataReadPlatformService bseConfigurationDataReadPlatformService;
+    private final BSEIQDataReadPlatformService bseiqDataReadPlatformService;
 
     @Autowired
     public BSEDataWritePlatformServiceImpl(final PlatformSecurityContext context,
-                                           final BSEConfigurationDataReadPlatformService BSEConfigurationDataReadPlatformService) {
+                                           final BSEConfigurationDataReadPlatformService bseConfigurationDataReadPlatformService,
+                                           final BSEIQDataReadPlatformService bseiqDataReadPlatformService) {
         this.context = context;
-        this.BSEConfigurationDataReadPlatformService = BSEConfigurationDataReadPlatformService;
+        this.bseConfigurationDataReadPlatformService = bseConfigurationDataReadPlatformService;
+        this.bseiqDataReadPlatformService = bseiqDataReadPlatformService;
     }
 
     @Override
@@ -55,7 +61,16 @@ public class BSEDataWritePlatformServiceImpl implements BSEDataWritePlatformServ
     @Override
     @Transactional
     public CommandProcessingResult saveBSEData(Long groupId, JsonCommand command) {
-        BSEConfigurationData bseConfigurationData = this.BSEConfigurationDataReadPlatformService.getBSEConfigurationData();
+        BSEConfiguration bseConfigurationData = this.bseConfigurationDataReadPlatformService.getBSEConfigurationData();
+        if (bseConfigurationData == null) {
+            throw new BSEConfigurationNotFoundException(Long.valueOf(1));
+        }
+
+        Collection<BSEIQRequest> bseiqRequest = this.bseiqDataReadPlatformService.getBSEIQRequestData(command.getGroupId());
+        if (bseiqRequest.isEmpty()) {
+            throw new BSEDataNotFoundException(command.getGroupId());
+        }
+
         Integer memberId = bseConfigurationData.getMemberId();
         String baseAPIURL = bseConfigurationData.getBaseAPIURL();
         String password = bseConfigurationData.getPassword();
