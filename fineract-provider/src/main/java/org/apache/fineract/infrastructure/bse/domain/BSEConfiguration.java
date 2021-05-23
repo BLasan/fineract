@@ -38,13 +38,17 @@ public class BSEConfiguration extends AbstractPersistableCustom {
     private String baseAPIURL;
 
     @Column(name = "memberId")
-    private Integer memberId;
+    private String memberId;
 
-    public BSEConfiguration(String userName, String password, String baseAPIURL, Integer memberId) {
+    @Column(name = "loginId")
+    private String loginId;
+
+    public BSEConfiguration(String userName, String password, String baseAPIURL, String memberId, String loginId) {
         this.baseAPIURL = baseAPIURL;
         this.userName = userName;
         this.password = password;
         this.memberId = memberId;
+        this.loginId = loginId;
     }
 
     public BSEConfiguration() {
@@ -59,6 +63,8 @@ public class BSEConfiguration extends AbstractPersistableCustom {
 
     public String getBaseAPIURL() { return this.baseAPIURL; }
 
-    public Integer getMemberId() { return this.memberId; }
+    public String getMemberId() { return this.memberId; }
+
+    public String getLoginId() { return this.loginId; }
 
 }

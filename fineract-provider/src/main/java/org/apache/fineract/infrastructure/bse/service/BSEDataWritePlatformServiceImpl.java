@@ -20,17 +20,25 @@ package org.apache.fineract.infrastructure.bse.service;
 
 import javax.transaction.Transactional;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import org.apache.fineract.infrastructure.bse.domain.BSEConfiguration;
 import org.apache.fineract.infrastructure.bse.domain.BSEIQRequest;
 import org.apache.fineract.infrastructure.bse.exception.BSEConfigurationNotFoundException;
 import org.apache.fineract.infrastructure.bse.exception.BSEDataNotFoundException;
+import org.apache.fineract.infrastructure.bse.exception.BSEUserLoginException;
 import org.apache.fineract.infrastructure.core.api.JsonCommand;
 import org.apache.fineract.infrastructure.core.data.CommandProcessingResult;
+import org.apache.fineract.infrastructure.core.serialization.FromJsonHelper;
 import org.apache.fineract.infrastructure.security.service.PlatformSecurityContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -42,14 +50,18 @@ public class BSEDataWritePlatformServiceImpl implements BSEDataWritePlatformServ
     private final PlatformSecurityContext context;
     private final BSEConfigurationDataReadPlatformService bseConfigurationDataReadPlatformService;
     private final BSEIQDataReadPlatformService bseiqDataReadPlatformService;
+    private final FromJsonHelper fromJsonHelper;
+    private JsonElement jsonElement;
 
     @Autowired
     public BSEDataWritePlatformServiceImpl(final PlatformSecurityContext context,
                                            final BSEConfigurationDataReadPlatformService bseConfigurationDataReadPlatformService,
-                                           final BSEIQDataReadPlatformService bseiqDataReadPlatformService) {
+                                           final BSEIQDataReadPlatformService bseiqDataReadPlatformService,
+                                           final FromJsonHelper fromJsonHelper) {
         this.context = context;
         this.bseConfigurationDataReadPlatformService = bseConfigurationDataReadPlatformService;
         this.bseiqDataReadPlatformService = bseiqDataReadPlatformService;
+        this.fromJsonHelper = fromJsonHelper;
     }
 
     @Override
@@ -71,16 +83,32 @@ public class BSEDataWritePlatformServiceImpl implements BSEDataWritePlatformServ
             throw new BSEDataNotFoundException(command.getGroupId());
         }
 
-        Integer memberId = bseConfigurationData.getMemberId();
+        String memberId = bseConfigurationData.getMemberId();
         String baseAPIURL = bseConfigurationData.getBaseAPIURL();
         String password = bseConfigurationData.getPassword();
         String userName = bseConfigurationData.getUserName();
+        String loginIn = bseConfigurationData.getLoginId();
+
+        String requestBody = String.format("{'memberCode': %s, 'loginid': %s, 'password': %s, 'ibbsid': %s}", memberId, loginIn, password, userName);
+
+        JsonObject jsonObject;
 
         try{
-            URL url = new URL("");
+            URL url = new URL(baseAPIURL);
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
-            con.setRequestMethod("GET");
+            con.setRequestProperty("Accept", "application/json");
+            con.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
             con.setConnectTimeout(5000);
+            jsonElement = JsonParser.parseString(userAuthenticate(baseAPIURL, con, requestBody));
+            String memberCode =  this.fromJsonHelper.extractStringNamed("membercode", jsonElement);
+            String token = this.fromJsonHelper.extractStringNamed("token", jsonElement);
+            String errorCode = this.fromJsonHelper.extractStringNamed("errorcode", jsonElement);
+            String message = this.fromJsonHelper.extractStringNamed("message", jsonElement);
+
+            if (!errorCode.equals("0")) {
+                throw new BSEUserLoginException(errorCode, memberCode, message);
+            }
+
         } catch (MalformedURLException malformedURLException) {
 
         } catch (IOException ioException) {
@@ -89,9 +117,29 @@ public class BSEDataWritePlatformServiceImpl implements BSEDataWritePlatformServ
         return CommandProcessingResult.empty();
     }
 
-    public String userAuthenticate() {
-        return null;
+    public String userAuthenticate(String baseAPIURL, HttpURLConnection connection, String requestBody) throws IOException, MalformedURLException {
+        connection.setDoInput(true);
+        connection.setDoOutput(true);
+        connection.setRequestMethod("POST");
+        String loginPath = baseAPIURL + "/Login";
+        OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream(), "UTF-8");
+        writer.write(requestBody);
+        writer.close();
+
+        BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+        StringBuffer jsonString = new StringBuffer();
+        String line;
+        while ((line = br.readLine()) != null) {
+            jsonString.append(line);
+        }
+
+        br.close();
+        connection.disconnect();
+
+        return jsonString.toString();
     }
+
+
 
 //    public BSEIPOData getIPOData() {
 //        return new BSEIPOData();
