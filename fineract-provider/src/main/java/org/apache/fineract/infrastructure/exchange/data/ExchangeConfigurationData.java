@@ -1,13 +1,13 @@
-package org.apache.fineract.infrastructure.bse.data;
+package org.apache.fineract.infrastructure.exchange.data;
 
-public class BSEConfigurationData {
+public class ExchangeConfigurationData {
 
     private final Integer memberId;
     private final String userName;
     private final String password;
     private final String baseAPIURL;
 
-    public BSEConfigurationData(final Integer memberId, final String baseAPIURL, final String password, final String userName) {
+    public ExchangeConfigurationData(final Integer memberId, final String baseAPIURL, final String password, final String userName) {
         this.memberId = memberId;
         this.password = password;
         this.baseAPIURL = baseAPIURL;

@@ -1,4 +1,4 @@
-package org.apache.fineract.infrastructure.bse.domain;
+package org.apache.fineract.infrastructure.exchange.domain;
 
 import org.springframework.data.jpa.domain.AbstractPersistable;
 
@@ -9,7 +9,7 @@ import java.util.Date;
 
 @Entity
 @Table(name = "m_bse_user_token")
-public class BSEUserTokenData extends AbstractPersistable {
+public class ExchangeUserTokenData extends AbstractPersistable {
 
     @Column(name = "memberId", length = 10, unique = true)
     private String memberId;
@@ -38,11 +38,11 @@ public class BSEUserTokenData extends AbstractPersistable {
 //    @Column(name = "message", length = 250)
 //    private final String message;
 
-    public BSEUserTokenData() {
+    public ExchangeUserTokenData() {
 
     }
 
-    public BSEUserTokenData(String memberId, String token, String tokenType, Date expires, String loginId) {
+    public ExchangeUserTokenData(String memberId, String token, String tokenType, Date expires, String loginId) {
         this.memberId = memberId;
         this.token = token;
         this.tokenType = tokenType;

@@ -1,10 +1,10 @@
-package org.apache.fineract.infrastructure.bse.domain;
+package org.apache.fineract.infrastructure.exchange.domain;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "m_bid_response")
-public class BSEBidResponse {
+public class ExchangeBidResponse {
 
     @Column(name = "bidId", unique = true, nullable = false, length = 16)
     private String bidId;
@@ -26,11 +26,11 @@ public class BSEBidResponse {
     @JoinTable(name = "m_response", joinColumns = @JoinColumn(name = "id"))
     private Integer responseId;
 
-    public BSEBidResponse() {
+    public ExchangeBidResponse() {
 
     }
 
-    public BSEBidResponse(String quantity, String rate, String bidId, String orderNo, char cutOff, Integer responseId) {
+    public ExchangeBidResponse(String quantity, String rate, String bidId, String orderNo, char cutOff, Integer responseId) {
         this.bidId = bidId;
         this.quantity = quantity;
         this.rate = rate;

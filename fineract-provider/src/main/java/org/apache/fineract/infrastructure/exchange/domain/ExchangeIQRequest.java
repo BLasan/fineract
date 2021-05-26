@@ -1,10 +1,10 @@
-package org.apache.fineract.infrastructure.bse.domain;
+package org.apache.fineract.infrastructure.exchange.domain;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "m_request")
-public class BSEIQRequest {
+public class ExchangeIQRequest {
 
     @Column(name = "id", length = 20, unique = true, nullable = false)
     private Long reqId;
@@ -19,14 +19,14 @@ public class BSEIQRequest {
     @Column(name = "request", length = 255, nullable = false)
     private byte[] request;
 
-    public BSEIQRequest (Long reqId, Long exchangeId, Long loanId, byte[] request) {
+    public ExchangeIQRequest(Long reqId, Long exchangeId, Long loanId, byte[] request) {
         this.reqId = reqId;
         this.exchangeId = exchangeId;
         this.loanId = loanId;
         this.request = request;
     }
 
-    public BSEIQRequest() {
+    public ExchangeIQRequest() {
 
     }
 

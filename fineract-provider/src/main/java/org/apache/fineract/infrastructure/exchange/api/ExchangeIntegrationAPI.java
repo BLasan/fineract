@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.fineract.infrastructure.bse.api;
+package org.apache.fineract.infrastructure.exchange.api;
 
 import io.swagger.v3.oas.annotations.Parameter;
 import javax.ws.rs.Consumes;
@@ -28,7 +28,7 @@ import javax.ws.rs.core.MediaType;
 import org.apache.fineract.commands.domain.CommandWrapper;
 import org.apache.fineract.commands.service.CommandWrapperBuilder;
 import org.apache.fineract.commands.service.PortfolioCommandSourceWritePlatformService;
-import org.apache.fineract.infrastructure.bse.data.BSEIPOData;
+import org.apache.fineract.infrastructure.exchange.data.ExchangeIPOData;
 import org.apache.fineract.infrastructure.core.api.ApiRequestParameterHelper;
 import org.apache.fineract.infrastructure.core.data.CommandProcessingResult;
 import org.apache.fineract.infrastructure.core.serialization.DefaultToApiJsonSerializer;
@@ -43,18 +43,18 @@ import org.springframework.stereotype.Component;
 @Path("/bseIntegration")
 @Component
 @Scope("singleton")
-public class BSEIntegrationAPI {
+public class ExchangeIntegrationAPI {
 
     private final PlatformSecurityContext context;
     private final PortfolioCommandSourceWritePlatformService commandsSourceWritePlatformService;
     private final ApiRequestParameterHelper apiRequestParameterHelper;
-    private final DefaultToApiJsonSerializer<BSEIPOData> toApiJsonSerializer;
+    private final DefaultToApiJsonSerializer<ExchangeIPOData> toApiJsonSerializer;
     private static final Logger LOG = LoggerFactory.getLogger(CreditBureauIntegrationAPI.class);
 
     @Autowired
-    public BSEIntegrationAPI(final PlatformSecurityContext context,
-            final PortfolioCommandSourceWritePlatformService commandsSourceWritePlatformService,
-            final ApiRequestParameterHelper apiRequestParameterHelper, final DefaultToApiJsonSerializer<BSEIPOData> toApiJsonSerializer) {
+    public ExchangeIntegrationAPI(final PlatformSecurityContext context,
+                                  final PortfolioCommandSourceWritePlatformService commandsSourceWritePlatformService,
+                                  final ApiRequestParameterHelper apiRequestParameterHelper, final DefaultToApiJsonSerializer<ExchangeIPOData> toApiJsonSerializer) {
         this.context = context;
         this.commandsSourceWritePlatformService = commandsSourceWritePlatformService;
         this.apiRequestParameterHelper = apiRequestParameterHelper;

@@ -16,18 +16,18 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.fineract.infrastructure.bse.service;
+package org.apache.fineract.infrastructure.exchange.service;
 
 import javax.transaction.Transactional;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import org.apache.fineract.infrastructure.bse.domain.BSEConfiguration;
-import org.apache.fineract.infrastructure.bse.domain.BSEIQRequest;
-import org.apache.fineract.infrastructure.bse.exception.BSEConfigurationNotFoundException;
-import org.apache.fineract.infrastructure.bse.exception.BSEDataNotFoundException;
-import org.apache.fineract.infrastructure.bse.exception.BSEUserLoginException;
+import org.apache.fineract.infrastructure.exchange.domain.ExchangeConfiguration;
+import org.apache.fineract.infrastructure.exchange.domain.ExchangeIQRequest;
+import org.apache.fineract.infrastructure.exchange.exception.ExchangeConfigurationNotFoundException;
+import org.apache.fineract.infrastructure.exchange.exception.ExchangeDataNotFoundException;
+import org.apache.fineract.infrastructure.exchange.exception.ExchangeUserLoginException;
 import org.apache.fineract.infrastructure.core.api.JsonCommand;
 import org.apache.fineract.infrastructure.core.data.CommandProcessingResult;
 import org.apache.fineract.infrastructure.core.serialization.FromJsonHelper;
@@ -45,22 +45,22 @@ import java.net.URL;
 import java.util.Collection;
 
 @Service
-public class BSEDataWritePlatformServiceImpl implements BSEDataWritePlatformService {
+public class ExchangeDataWritePlatformServiceImpl implements ExchangeDataWritePlatformService {
 
     private final PlatformSecurityContext context;
-    private final BSEConfigurationDataReadPlatformService bseConfigurationDataReadPlatformService;
-    private final BSEIQDataReadPlatformService bseiqDataReadPlatformService;
+    private final ExchangeConfigurationDataReadPlatformService exchangeConfigurationDataReadPlatformService;
+    private final ExchangeIQDataReadPlatformService exchangeIQDataReadPlatformService;
     private final FromJsonHelper fromJsonHelper;
     private JsonElement jsonElement;
 
     @Autowired
-    public BSEDataWritePlatformServiceImpl(final PlatformSecurityContext context,
-                                           final BSEConfigurationDataReadPlatformService bseConfigurationDataReadPlatformService,
-                                           final BSEIQDataReadPlatformService bseiqDataReadPlatformService,
-                                           final FromJsonHelper fromJsonHelper) {
+    public ExchangeDataWritePlatformServiceImpl(final PlatformSecurityContext context,
+                                                final ExchangeConfigurationDataReadPlatformService exchangeConfigurationDataReadPlatformService,
+                                                final ExchangeIQDataReadPlatformService exchangeIQDataReadPlatformService,
+                                                final FromJsonHelper fromJsonHelper) {
         this.context = context;
-        this.bseConfigurationDataReadPlatformService = bseConfigurationDataReadPlatformService;
-        this.bseiqDataReadPlatformService = bseiqDataReadPlatformService;
+        this.exchangeConfigurationDataReadPlatformService = exchangeConfigurationDataReadPlatformService;
+        this.exchangeIQDataReadPlatformService = exchangeIQDataReadPlatformService;
         this.fromJsonHelper = fromJsonHelper;
     }
 
@@ -73,21 +73,21 @@ public class BSEDataWritePlatformServiceImpl implements BSEDataWritePlatformServ
     @Override
     @Transactional
     public CommandProcessingResult saveBSEData(Long groupId, JsonCommand command) {
-        BSEConfiguration bseConfigurationData = this.bseConfigurationDataReadPlatformService.getBSEConfigurationData();
-        if (bseConfigurationData == null) {
-            throw new BSEConfigurationNotFoundException(Long.valueOf(1));
+        ExchangeConfiguration exchangeConfigurationData = this.exchangeConfigurationDataReadPlatformService.getBSEConfigurationData();
+        if (exchangeConfigurationData == null) {
+            throw new ExchangeConfigurationNotFoundException(Long.valueOf(1));
         }
 
-        Collection<BSEIQRequest> bseiqRequest = this.bseiqDataReadPlatformService.getBSEIQRequestData(command.getGroupId());
-        if (bseiqRequest.isEmpty()) {
-            throw new BSEDataNotFoundException(command.getGroupId());
+        Collection<ExchangeIQRequest> exchangeIQRequest = this.exchangeIQDataReadPlatformService.getBSEIQRequestData(command.getGroupId());
+        if (exchangeIQRequest.isEmpty()) {
+            throw new ExchangeDataNotFoundException(command.getGroupId());
         }
 
-        String memberId = bseConfigurationData.getMemberId();
-        String baseAPIURL = bseConfigurationData.getBaseAPIURL();
-        String password = bseConfigurationData.getPassword();
-        String userName = bseConfigurationData.getUserName();
-        String loginIn = bseConfigurationData.getLoginId();
+        String memberId = exchangeConfigurationData.getMemberId();
+        String baseAPIURL = exchangeConfigurationData.getBaseAPIURL();
+        String password = exchangeConfigurationData.getPassword();
+        String userName = exchangeConfigurationData.getUserName();
+        String loginIn = exchangeConfigurationData.getLoginId();
 
         String requestBody = String.format("{'memberCode': %s, 'loginid': %s, 'password': %s, 'ibbsid': %s}", memberId, loginIn, password, userName);
 
@@ -106,7 +106,7 @@ public class BSEDataWritePlatformServiceImpl implements BSEDataWritePlatformServ
             String message = this.fromJsonHelper.extractStringNamed("message", jsonElement);
 
             if (!errorCode.equals("0")) {
-                throw new BSEUserLoginException(errorCode, memberCode, message);
+                throw new ExchangeUserLoginException(errorCode, memberCode, message);
             }
 
         } catch (MalformedURLException malformedURLException) {
@@ -141,12 +141,12 @@ public class BSEDataWritePlatformServiceImpl implements BSEDataWritePlatformServ
 
 
 
-//    public BSEIPOData getIPOData() {
-//        return new BSEIPOData();
+//    public ExchangeIPOData getIPOData() {
+//        return new ExchangeIPOData();
 //    }
 
-//    public BSEBidData getBidData() {
-//        return new BSEBidData();
+//    public ExchangeBidData getBidData() {
+//        return new ExchangeBidData();
 //    }
 
 }

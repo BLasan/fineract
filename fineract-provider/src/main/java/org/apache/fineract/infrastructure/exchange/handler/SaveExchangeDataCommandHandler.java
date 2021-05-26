@@ -16,12 +16,12 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.fineract.infrastructure.bse.handler;
+package org.apache.fineract.infrastructure.exchange.handler;
 
 import javax.transaction.Transactional;
 import org.apache.fineract.commands.annotation.CommandType;
 import org.apache.fineract.commands.handler.NewCommandSourceHandler;
-import org.apache.fineract.infrastructure.bse.service.BSEDataWritePlatformService;
+import org.apache.fineract.infrastructure.exchange.service.ExchangeDataWritePlatformService;
 import org.apache.fineract.infrastructure.core.api.JsonCommand;
 import org.apache.fineract.infrastructure.core.data.CommandProcessingResult;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,12 +29,12 @@ import org.springframework.stereotype.Service;
 
 @Service
 @CommandType(entity = "IQDATA", action = "SAVE")
-public class SaveBSEDataCommandHandler implements NewCommandSourceHandler {
+public class SaveExchangeDataCommandHandler implements NewCommandSourceHandler {
 
-    private final BSEDataWritePlatformService writePlatformService;
+    private final ExchangeDataWritePlatformService writePlatformService;
 
     @Autowired
-    public SaveBSEDataCommandHandler(final BSEDataWritePlatformService writePlatformService) {
+    public SaveExchangeDataCommandHandler(final ExchangeDataWritePlatformService writePlatformService) {
         this.writePlatformService = writePlatformService;
     }
 

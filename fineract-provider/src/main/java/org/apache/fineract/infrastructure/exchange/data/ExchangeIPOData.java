@@ -1,6 +1,6 @@
-package org.apache.fineract.infrastructure.bse.data;
+package org.apache.fineract.infrastructure.exchange.data;
 
-public class BSEIPOData {
+public class ExchangeIPOData {
 
     private final String scriptId;
     private final long groupId;
@@ -19,10 +19,10 @@ public class BSEIPOData {
 //    private final String ifscCode;
     private final String referenceNo;
     private final String upiId;
-//    private final BSEBidData[] bseBidData;
+//    private final ExchangeBidData[] bseBidData;
 
-    public BSEIPOData (final String scriptId, final String applicationNo, final String category,
-                       final long groupId, final char checkReceive, final String referenceNo, final String upiId) {
+    public ExchangeIPOData(final String scriptId, final String applicationNo, final String category,
+                           final long groupId, final char checkReceive, final String referenceNo, final String upiId) {
         this.scriptId = scriptId;
         this.applicationNo = applicationNo;
         this.category = category;

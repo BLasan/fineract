@@ -16,17 +16,17 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.fineract.infrastructure.bse.domain;
+package org.apache.fineract.infrastructure.exchange.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import org.apache.fineract.infrastructure.core.api.JsonCommand;
+
 import org.apache.fineract.infrastructure.core.domain.AbstractPersistableCustom;
 
 @Entity
 @Table(name = "m_bse_configuration")
-public class BSEConfiguration extends AbstractPersistableCustom {
+public class ExchangeConfiguration extends AbstractPersistableCustom {
 
     @Column(name = "userName")
     private String userName;
@@ -43,7 +43,7 @@ public class BSEConfiguration extends AbstractPersistableCustom {
     @Column(name = "loginId")
     private String loginId;
 
-    public BSEConfiguration(String userName, String password, String baseAPIURL, String memberId, String loginId) {
+    public ExchangeConfiguration(String userName, String password, String baseAPIURL, String memberId, String loginId) {
         this.baseAPIURL = baseAPIURL;
         this.userName = userName;
         this.password = password;
@@ -51,7 +51,7 @@ public class BSEConfiguration extends AbstractPersistableCustom {
         this.loginId = loginId;
     }
 
-    public BSEConfiguration() {
+    public ExchangeConfiguration() {
 
     }
 

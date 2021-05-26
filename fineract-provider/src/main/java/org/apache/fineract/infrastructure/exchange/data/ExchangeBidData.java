@@ -1,6 +1,6 @@
-package org.apache.fineract.infrastructure.bse.data;
+package org.apache.fineract.infrastructure.exchange.data;
 
-public class BSEBidData {
+public class ExchangeBidData {
 
     private final String bidId;
     private final Integer quantity;
@@ -9,8 +9,8 @@ public class BSEBidData {
     private final String orderNo;
     private final Long loanId;
 
-    public BSEBidData (final String bidId, final Integer quantity, final Double rate, final Integer cutoffFlag,
-                       final String orderNo, final Long loanId) {
+    public ExchangeBidData(final String bidId, final Integer quantity, final Double rate, final Integer cutoffFlag,
+                           final String orderNo, final Long loanId) {
         this.bidId = bidId;
         this.quantity = quantity;
         this.rate = rate;

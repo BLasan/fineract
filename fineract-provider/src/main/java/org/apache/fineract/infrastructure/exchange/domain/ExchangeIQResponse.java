@@ -1,4 +1,4 @@
-package org.apache.fineract.infrastructure.bse.domain;
+package org.apache.fineract.infrastructure.exchange.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -6,7 +6,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "m_response")
-public class BSEIQResponse {
+public class ExchangeIQResponse {
 
     @Column(name = "scriptId", length = 10, nullable = false)
     private String scriptId;
@@ -68,15 +68,15 @@ public class BSEIQResponse {
     @Column(name = "errorMessage", length = 100)
     private String errorMessage;
 
-    public BSEIQResponse() {
+    public ExchangeIQResponse() {
 
     }
 
-    public BSEIQResponse (String scriptId, String applicationNo, String applicationName, String category,
-                          String chequeAmount, String chequeReceivedFlag, String depository, String depositoryId,
-                          String clientbenId, String panNo, String bankName, String location, String accountNumberUPIID,
-                          String ifscCode, String referenceNo, char asbaUPIID, String statusCode, String statusMessage,
-                          String errorCode, String errorMessage) {
+    public ExchangeIQResponse(String scriptId, String applicationNo, String applicationName, String category,
+                              String chequeAmount, String chequeReceivedFlag, String depository, String depositoryId,
+                              String clientbenId, String panNo, String bankName, String location, String accountNumberUPIID,
+                              String ifscCode, String referenceNo, char asbaUPIID, String statusCode, String statusMessage,
+                              String errorCode, String errorMessage) {
         this.scriptId = scriptId;
         this.applicationName = applicationName;
         this.applicationNo = applicationNo;
