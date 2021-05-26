@@ -23,7 +23,7 @@ public class ExchangeConfigurationDataReadPlatformServiceImpl implements Exchang
         this.exchangeConfigurationRepository = exchangeConfigurationRepository;
     }
 
-    private static final class BSEConfigurationDataExtractor implements ResultSetExtractor<ExchangeConfigurationData> {
+    private static final class ExchangeConfigurationDataExtractor implements ResultSetExtractor<ExchangeConfigurationData> {
 
         public ExchangeConfigurationData extractData(final ResultSet rs) throws SQLException, DataAccessException {
             int memberID = 0;
@@ -31,6 +31,11 @@ public class ExchangeConfigurationDataReadPlatformServiceImpl implements Exchang
             String password = "";
             String baseAPIURL = "";
             while (rs.next()) {
+                String configKey = rs.getString("configkey");
+                String value = rs.getString("value");
+                if (ExchangeServiceConstants.EXCHANGE_CONFIG_USERNAME.equals(rs.getString(""))) {
+                    userName =
+                }
                 memberID = rs.getInt("mamberId");
                 userName = rs.getString("userName");
                 password = rs.getString("password");
@@ -41,11 +46,11 @@ public class ExchangeConfigurationDataReadPlatformServiceImpl implements Exchang
     }
 
     @Override
-    public ExchangeConfiguration getBSEConfigurationData() {
-        ExchangeConfiguration exchangeConfigurationData = exchangeConfigurationRepository.findById(1).orElse(null);
-//        final ResultSetExtractor<ExchangeConfigurationData> resultSetExtractor = new BSEConfigurationDataExtractor();
-//        final String sql = "SELECT * FROM m_bse_config";
-//        final ExchangeConfigurationData bseConfigData = this.jdbcTemplate.query(sql, resultSetExtractor, new Object[] {});
+    public ExchangeConfigurationData getBSEConfigurationData() {
+        //ExchangeConfiguration exchangeConfigurationData = exchangeConfigurationRepository.findById(1).orElse(null);
+        final ResultSetExtractor<ExchangeConfigurationData> resultSetExtractor = new ExchangeConfigurationDataExtractor();
+        final String sql = "SELECT * FROM m_exchange_configuration";
+        final ExchangeConfigurationData exchangeConfigurationData = this.jdbcTemplate.query(sql, resultSetExtractor, new Object[] {});
         return exchangeConfigurationData;
     }
 

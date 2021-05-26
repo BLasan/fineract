@@ -23,6 +23,7 @@ import javax.transaction.Transactional;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import org.apache.fineract.infrastructure.exchange.data.ExchangeConfigurationData;
 import org.apache.fineract.infrastructure.exchange.domain.ExchangeConfiguration;
 import org.apache.fineract.infrastructure.exchange.domain.ExchangeIQRequest;
 import org.apache.fineract.infrastructure.exchange.exception.ExchangeConfigurationNotFoundException;
@@ -73,7 +74,7 @@ public class ExchangeDataWritePlatformServiceImpl implements ExchangeDataWritePl
     @Override
     @Transactional
     public CommandProcessingResult saveBSEData(Long groupId, JsonCommand command) {
-        ExchangeConfiguration exchangeConfigurationData = this.exchangeConfigurationDataReadPlatformService.getBSEConfigurationData();
+        ExchangeConfigurationData exchangeConfigurationData = this.exchangeConfigurationDataReadPlatformService.getBSEConfigurationData();
         if (exchangeConfigurationData == null) {
             throw new ExchangeConfigurationNotFoundException(Long.valueOf(1));
         }

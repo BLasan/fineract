@@ -28,43 +28,39 @@ import org.apache.fineract.infrastructure.core.domain.AbstractPersistableCustom;
 @Table(name = "m_bse_configuration")
 public class ExchangeConfiguration extends AbstractPersistableCustom {
 
-    @Column(name = "userName")
-    private String userName;
+    @Column(name = "configkey", length = 50)
+    private String configKey;
 
-    @Column(name = "password")
-    private String password;
+    @Column(name = "value", length = 255)
+    private String value;
 
-    @Column(name = "baseAPIURL")
-    private String baseAPIURL;
+    @Column(name = "exchange_id", length = 20)
+    private Long exchangeId;
 
-    @Column(name = "memberId")
-    private String memberId;
+    @Column(name = "description", length = 50)
+    private String description;
 
-    @Column(name = "loginId")
-    private String loginId;
 
-    public ExchangeConfiguration(String userName, String password, String baseAPIURL, String memberId, String loginId) {
-        this.baseAPIURL = baseAPIURL;
-        this.userName = userName;
-        this.password = password;
-        this.memberId = memberId;
-        this.loginId = loginId;
+    public ExchangeConfiguration(String configKey, String value, Long exchangeId, String description) {
+        this.configKey = configKey;
+        this.value = value;
+        this.exchangeId = exchangeId;
+        this.description = description;
     }
 
     public ExchangeConfiguration() {
 
     }
 
-    public String getUserName() {
-        return this.userName;
+    public String getConfigKey() {
+        return this.configKey;
     }
 
-    public String getPassword() { return this.password; }
+    public String getValue() { return this.value; }
 
-    public String getBaseAPIURL() { return this.baseAPIURL; }
+    public String getDescription() { return this.description; }
 
-    public String getMemberId() { return this.memberId; }
+    public Long getExchangeId() { return this.exchangeId; }
 
-    public String getLoginId() { return this.loginId; }
 
 }
