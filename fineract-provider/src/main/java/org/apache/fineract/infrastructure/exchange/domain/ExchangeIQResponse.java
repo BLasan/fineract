@@ -2,7 +2,9 @@ package org.apache.fineract.infrastructure.exchange.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.util.List;
 
 @Entity
 @Table(name = "m_response")
@@ -68,6 +70,9 @@ public class ExchangeIQResponse {
     @Column(name = "errorMessage", length = 100)
     private String errorMessage;
 
+    @OneToMany(mappedBy = "exchangeIQResponse")
+    private List<ExchangeBidResponse> exchangeBidResponseList;
+
     public ExchangeIQResponse() {
 
     }
@@ -76,7 +81,7 @@ public class ExchangeIQResponse {
                               String chequeAmount, String chequeReceivedFlag, String depository, String depositoryId,
                               String clientbenId, String panNo, String bankName, String location, String accountNumberUPIID,
                               String ifscCode, String referenceNo, char asbaUPIID, String statusCode, String statusMessage,
-                              String errorCode, String errorMessage) {
+                              String errorCode, String errorMessage, List<ExchangeBidResponse> exchangeBidResponseList) {
         this.scriptId = scriptId;
         this.applicationName = applicationName;
         this.applicationNo = applicationNo;
@@ -97,6 +102,7 @@ public class ExchangeIQResponse {
         this.statusMessage = statusMessage;
         this.errorCode = errorCode;
         this.errorMessage = errorMessage;
+        this.exchangeBidResponseList = exchangeBidResponseList;
     }
 
     public String getScriptId() { return this.scriptId; }
@@ -138,5 +144,7 @@ public class ExchangeIQResponse {
     public String  getErrorMessage() { return this.errorMessage; }
 
     public char getAsbaUPIID() { return this.asbaUPIID; }
+
+    public List<ExchangeBidResponse> exchangeBidResponseList() { return this.exchangeBidResponseList; }
 
 }

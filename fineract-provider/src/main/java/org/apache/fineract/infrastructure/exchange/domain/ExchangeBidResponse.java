@@ -21,22 +21,21 @@ public class ExchangeBidResponse {
     @Column(name = "OrderNo", length = 16)
     private String orderNo;
 
-    @Column(name = "responseId", length = 15)
     @ManyToOne
-    @JoinTable(name = "m_response", joinColumns = @JoinColumn(name = "id"))
-    private Integer responseId;
+//    @JoinTable(name = "m_response", joinColumns = @JoinColumn(name = "id"))
+    private ExchangeIQResponse exchangeIQResponse;
 
     public ExchangeBidResponse() {
 
     }
 
-    public ExchangeBidResponse(String quantity, String rate, String bidId, String orderNo, char cutOff, Integer responseId) {
+    public ExchangeBidResponse(String quantity, String rate, String bidId, String orderNo, char cutOff) {
         this.bidId = bidId;
         this.quantity = quantity;
         this.rate = rate;
         this.cutOff = cutOff;
         this.orderNo = orderNo;
-        this.responseId = responseId;
+//        this.exchangeIQResponse = exchangeIQResponse;
     }
 
     public String getQuantity() { return this.quantity; }
@@ -49,6 +48,6 @@ public class ExchangeBidResponse {
 
     public String getOrderNo() { return this.orderNo; }
 
-    public Integer getResponseId() { return this.responseId; }
+//    public ExchangeIQResponse getResponseId() { return this.exchangeIQResponse; }
 
 }

@@ -11,11 +11,14 @@ import org.springframework.jdbc.core.ResultSetExtractor;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ExchangeConfigurationDataReadPlatformServiceImpl implements ExchangeConfigurationDataReadPlatformService {
 
     private final JdbcTemplate jdbcTemplate;
     private final ExchangeConfigurationRepository exchangeConfigurationRepository;
+    private static Map configMap = new HashMap();
 
     @Autowired
     public ExchangeConfigurationDataReadPlatformServiceImpl(final RoutingDataSource dataSource, ExchangeConfigurationRepository exchangeConfigurationRepository) {
@@ -30,18 +33,31 @@ public class ExchangeConfigurationDataReadPlatformServiceImpl implements Exchang
             String userName = "";
             String password = "";
             String baseAPIURL = "";
+            String applyIPOAPI = "";
+            String logoutAPI = "";
+            String tokenAPI = "";
+            String env = "";
             while (rs.next()) {
                 String configKey = rs.getString("configkey");
                 String value = rs.getString("value");
-                if (ExchangeServiceConstants.EXCHANGE_CONFIG_USERNAME.equals(rs.getString(""))) {
-                    userName =
+                if (ExchangeServiceConstants.EXCHANGE_CONFIG_USERNAME.equals(configKey)) {
+//                    configMap.put(configKey, value);
+                    userName = value;
+                } else if (ExchangeServiceConstants.EXCHANGE_CONFIG_BASEAPIURL.equals(configKey)) {
+                    password = value;
+                } else if (ExchangeServiceConstants.EXCHANGE_CONFIG_BASEAPIURL.equals(configKey)) {
+                    baseAPIURL = value;
+                } else if (ExchangeServiceConstants.EXCHANGE_CONFIG_APPLYIPOAPI.equals(configKey)) {
+                    applyIPOAPI = value;
+                } else if (ExchangeServiceConstants.EXCHANGE_CONFIG_LOGOUTAPI.equals(configKey)) {
+                    logoutAPI = value;
+                } else if (ExchangeServiceConstants.EXCHANGE_CONFIG_TOKENAPI.equals(configKey)) {
+                    tokenAPI = value;
+                } else if (ExchangeServiceConstants.EXCHANGE_CONFIG_ENV.equals(configKey)) {
+                    env = value;
                 }
-                memberID = rs.getInt("mamberId");
-                userName = rs.getString("userName");
-                password = rs.getString("password");
-                baseAPIURL = rs.getString("baseAPIURL");
             }
-            return new ExchangeConfigurationData(memberID, baseAPIURL, password, userName);
+            return new ExchangeConfigurationData(memberID, baseAPIURL, password, userName, applyIPOAPI, logoutAPI, tokenAPI, env);
         }
     }
 
