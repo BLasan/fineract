@@ -19,11 +19,8 @@
 package org.apache.fineract.infrastructure.exchange.api;
 
 import io.swagger.v3.oas.annotations.Parameter;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import org.apache.fineract.commands.domain.CommandWrapper;
 import org.apache.fineract.commands.service.CommandWrapperBuilder;
@@ -65,7 +62,9 @@ public class ExchangeIntegrationAPI {
     @Path("{groupId}")
     @Consumes({ MediaType.APPLICATION_JSON })
     @Produces({ MediaType.APPLICATION_JSON })
-    public String applyForIQ(@PathParam("groupId") @Parameter(description = "groupId") final int groupId, @Parameter(hidden = true) String requestData) {
+    public String applyForIQ(@PathParam("groupId") @Parameter(description = "groupId") final int groupId,
+                             @QueryParam("exchangeType") @Parameter(description = "exchange type") final String exchangeType,
+                             @Parameter(hidden = true) String requestData) {
         final CommandWrapper commandRequest = new CommandWrapperBuilder().saveBSEData(groupId).withJson(requestData).build();
         final CommandProcessingResult commandProcessingResult = this.commandsSourceWritePlatformService.logCommandSource(commandRequest);
         return this.toApiJsonSerializer.serialize(commandProcessingResult);
