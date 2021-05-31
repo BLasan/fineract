@@ -33,71 +33,75 @@ public final class ExchangeServiceConstants {
     }
 }
 
-//public final class ExternalServicesConstants {
+// public final class ExternalServicesConstants {
 //
 //
-//    public static final String S3_SERVICE_NAME = "S3";
-//    public static final String S3_BUCKET_NAME = "s3_bucket_name";
-//    public static final String S3_ACCESS_KEY = "s3_access_key";
-//    public static final String S3_SECRET_KEY = "s3_secret_key";
+// public static final String S3_SERVICE_NAME = "S3";
+// public static final String S3_BUCKET_NAME = "s3_bucket_name";
+// public static final String S3_ACCESS_KEY = "s3_access_key";
+// public static final String S3_SECRET_KEY = "s3_secret_key";
 //
-//    public static final String SMTP_SERVICE_NAME = "SMTP_Email_Account";
-//    public static final String SMTP_USERNAME = "username";
-//    public static final String SMTP_PASSWORD = "password";
-//    public static final String SMTP_HOST = "host";
-//    public static final String SMTP_PORT = "port";
-//    public static final String SMTP_USE_TLS = "useTLS";
-//    public static final String SMTP_FROM_EMAIL = "fromEmail";
-//    public static final String SMTP_FROM_NAME = "fromName";
+// public static final String SMTP_SERVICE_NAME = "SMTP_Email_Account";
+// public static final String SMTP_USERNAME = "username";
+// public static final String SMTP_PASSWORD = "password";
+// public static final String SMTP_HOST = "host";
+// public static final String SMTP_PORT = "port";
+// public static final String SMTP_USE_TLS = "useTLS";
+// public static final String SMTP_FROM_EMAIL = "fromEmail";
+// public static final String SMTP_FROM_NAME = "fromName";
 //
-//    public static final String SMS_SERVICE_NAME = "MESSAGE_GATEWAY";
-//    public static final String SMS_HOST = "host_name";
-//    public static final String SMS_PORT = "port_number";
-//    public static final String SMS_END_POINT = "end_point";
-//    public static final String SMS_TENANT_APP_KEY = "tenant_app_key";
+// public static final String SMS_SERVICE_NAME = "MESSAGE_GATEWAY";
+// public static final String SMS_HOST = "host_name";
+// public static final String SMS_PORT = "port_number";
+// public static final String SMS_END_POINT = "end_point";
+// public static final String SMS_TENANT_APP_KEY = "tenant_app_key";
 //
-//    public static final String NOTIFICATION_SERVICE_NAME = "NOTIFICATION";
-//    public static final String NOTIFICATION_SERVER_KEY = "server_key";
-//    public static final String NOTIFICATION_GCM_END_POINT = "gcm_end_point";
-//    public static final String NOTIFICATION_FCM_END_POINT = "fcm_end_point";
+// public static final String NOTIFICATION_SERVICE_NAME = "NOTIFICATION";
+// public static final String NOTIFICATION_SERVER_KEY = "server_key";
+// public static final String NOTIFICATION_GCM_END_POINT = "gcm_end_point";
+// public static final String NOTIFICATION_FCM_END_POINT = "fcm_end_point";
 //
-//    public enum ExternalservicePropertiesJSONinputParams {
+// public enum ExternalservicePropertiesJSONinputParams {
 //
-//        EXTERNAL_SERVICE_ID("external_service_id"), NAME("name"), VALUE("value");
+// EXTERNAL_SERVICE_ID("external_service_id"), NAME("name"), VALUE("value");
 //
-//        private final String value;
+// private final String value;
 //
-//        ExternalservicePropertiesJSONinputParams(final String value) {
-//            this.value = value;
-//        }
+// ExternalservicePropertiesJSONinputParams(final String value) {
+// this.value = value;
+// }
 //
-//        private static final Set<String> values = new HashSet<>();
+// private static final Set<String> values = new HashSet<>();
 //
-//        static {
-//            for (final org.apache.fineract.infrastructure.configuration.service.ExternalServicesConstants.ExternalservicePropertiesJSONinputParams type : org.apache.fineract.infrastructure.configuration.service.ExternalServicesConstants.ExternalservicePropertiesJSONinputParams.values()) {
-//                values.add(type.value);
-//            }
-//        }
+// static {
+// for (final
+// org.apache.fineract.infrastructure.configuration.service.ExternalServicesConstants.ExternalservicePropertiesJSONinputParams
+// type :
+// org.apache.fineract.infrastructure.configuration.service.ExternalServicesConstants.ExternalservicePropertiesJSONinputParams.values())
+// {
+// values.add(type.value);
+// }
+// }
 //
-//        public static Set<String> getAllValues() {
-//            return values;
-//        }
+// public static Set<String> getAllValues() {
+// return values;
+// }
 //
-//        @Override
-//        public String toString() {
-//            return name().toString().replaceAll("_", " ");
-//        }
+// @Override
+// public String toString() {
+// return name().toString().replaceAll("_", " ");
+// }
 //
-//        public String getValue() {
-//            return this.value;
-//        }
-//    }
-//
-//
-//
-//
-//
-//
+// public String getValue() {
+// return this.value;
+// }
+// }
 //
 //
-//}
+//
+//
+//
+//
+//
+//
+// }

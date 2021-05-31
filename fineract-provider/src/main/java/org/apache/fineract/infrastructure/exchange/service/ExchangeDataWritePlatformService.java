@@ -29,4 +29,7 @@ public interface ExchangeDataWritePlatformService {
     // saves fetched BSE Data to database
     CommandProcessingResult saveBSEData(Long groupId, JsonCommand command);
 
+    // saves fetched NSE Data to database
+    CommandProcessingResult saveNSEData(Long groupId, JsonCommand command);
+
 }

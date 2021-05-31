@@ -18,11 +18,11 @@
  */
 package org.apache.fineract.infrastructure.exchange.domain;
 
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import java.util.List;
 
 @Entity
 @Table(name = "m_response")
@@ -95,11 +95,10 @@ public class ExchangeIQResponse {
 
     }
 
-    public ExchangeIQResponse(String scriptId, String applicationNo, String applicationName, String category,
-                              String chequeAmount, String chequeReceivedFlag, String depository, String depositoryId,
-                              String clientbenId, String panNo, String bankName, String location, String accountNumberUPIID,
-                              String ifscCode, String referenceNo, char asbaUPIID, String statusCode, String statusMessage,
-                              String errorCode, String errorMessage, List<ExchangeBidResponse> exchangeBidResponseList) {
+    public ExchangeIQResponse(String scriptId, String applicationNo, String applicationName, String category, String chequeAmount,
+            String chequeReceivedFlag, String depository, String depositoryId, String clientbenId, String panNo, String bankName,
+            String location, String accountNumberUPIID, String ifscCode, String referenceNo, char asbaUPIID, String statusCode,
+            String statusMessage, String errorCode, String errorMessage, List<ExchangeBidResponse> exchangeBidResponseList) {
         this.scriptId = scriptId;
         this.applicationName = applicationName;
         this.applicationNo = applicationNo;
@@ -123,46 +122,88 @@ public class ExchangeIQResponse {
         this.exchangeBidResponseList = exchangeBidResponseList;
     }
 
-    public String getScriptId() { return this.scriptId; }
+    public String getScriptId() {
+        return this.scriptId;
+    }
 
-    public String getApplicationNo() { return this.applicationNo; }
+    public String getApplicationNo() {
+        return this.applicationNo;
+    }
 
-    public String getCategory() { return this.category; }
+    public String getCategory() {
+        return this.category;
+    }
 
-    public String getLocation() { return this.location; }
+    public String getLocation() {
+        return this.location;
+    }
 
-    public String getPanNo() { return this.panNo; }
+    public String getPanNo() {
+        return this.panNo;
+    }
 
-    public String getBankName() { return this.panNo; }
+    public String getBankName() {
+        return this.panNo;
+    }
 
-    public String getReferenceNo() { return this.referenceNo; }
+    public String getReferenceNo() {
+        return this.referenceNo;
+    }
 
-    public String getIfscCode() { return this.ifscCode; }
+    public String getIfscCode() {
+        return this.ifscCode;
+    }
 
-    public String getDepository() { return this.depository; }
+    public String getDepository() {
+        return this.depository;
+    }
 
-    public String getDepositoryId() { return this.depositoryId; }
+    public String getDepositoryId() {
+        return this.depositoryId;
+    }
 
-    public String getApplicationName() { return this.applicationName; }
+    public String getApplicationName() {
+        return this.applicationName;
+    }
 
-    public String getClientbenId() { return this.clientbenId; }
+    public String getClientbenId() {
+        return this.clientbenId;
+    }
 
-    public String getChequeReceivedFlag() { return this.chequeReceivedFlag; }
+    public String getChequeReceivedFlag() {
+        return this.chequeReceivedFlag;
+    }
 
-    public String getChequeAmount() { return this.chequeAmount; }
+    public String getChequeAmount() {
+        return this.chequeAmount;
+    }
 
-    public String getAccountNumberUPIID() { return this.accountNumberUPIID; }
+    public String getAccountNumberUPIID() {
+        return this.accountNumberUPIID;
+    }
 
-    public String getStatusCode() { return this.statusCode; }
+    public String getStatusCode() {
+        return this.statusCode;
+    }
 
-    public String getStatusMessage() { return this.statusMessage; }
+    public String getStatusMessage() {
+        return this.statusMessage;
+    }
 
-    public String getErrorCode() { return this.errorCode; }
+    public String getErrorCode() {
+        return this.errorCode;
+    }
 
-    public String  getErrorMessage() { return this.errorMessage; }
+    public String getErrorMessage() {
+        return this.errorMessage;
+    }
 
-    public char getAsbaUPIID() { return this.asbaUPIID; }
+    public char getAsbaUPIID() {
+        return this.asbaUPIID;
+    }
 
-    public List<ExchangeBidResponse> exchangeBidResponseList() { return this.exchangeBidResponseList; }
+    public List<ExchangeBidResponse> exchangeBidResponseList() {
+        return this.exchangeBidResponseList;
+    }
 
 }

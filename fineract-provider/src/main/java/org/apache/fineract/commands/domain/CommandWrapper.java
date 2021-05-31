@@ -105,6 +105,7 @@ public class CommandWrapper {
         this.templateId = templateId;
         this.creditBureauId = creditBureauId;
         this.organisationCreditBureauId = organisationCreditBureauId;
+
     }
 
     private CommandWrapper(final Long commandId, final String actionName, final String entityName, final Long resourceId,

@@ -126,11 +126,11 @@ public class CommandWrapperBuilder {
         return this;
     }
 
-    public CommandWrapperBuilder saveBSEData(final long id) {
+    public CommandWrapperBuilder saveExchangeData(final long id, final String exchangeType) {
         this.actionName = "SAVE";
-        this.entityName = "IQDATA";
+        this.entityName = exchangeType.toUpperCase() + "IQDATA";
         this.entityId = id;
-        this.href = "/bseIntegration/save";
+        this.href = "/" + exchangeType.toLowerCase() + "Integration/save";
         return this;
     }
 

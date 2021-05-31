@@ -27,8 +27,8 @@ public class ExchangeBidData {
     private final String orderNo;
     private final Long loanId;
 
-    public ExchangeBidData(final String bidId, final Integer quantity, final Double rate, final Integer cutoffFlag,
-                           final String orderNo, final Long loanId) {
+    public ExchangeBidData(final String bidId, final Integer quantity, final Double rate, final Integer cutoffFlag, final String orderNo,
+            final Long loanId) {
         this.bidId = bidId;
         this.quantity = quantity;
         this.rate = rate;
@@ -37,15 +37,27 @@ public class ExchangeBidData {
         this.loanId = loanId;
     }
 
-    public String getBidId() { return this.bidId; }
+    public String getBidId() {
+        return this.bidId;
+    }
 
-    public Integer getQuantity() { return this.quantity; }
+    public Integer getQuantity() {
+        return this.quantity;
+    }
 
-    public Double getRate() { return this.rate; }
+    public Double getRate() {
+        return this.rate;
+    }
 
-    public Integer getCutoffFlag() { return this.cutoffFlag; }
+    public Integer getCutoffFlag() {
+        return this.cutoffFlag;
+    }
 
-    public String getOrderNo() { return this.orderNo; }
+    public String getOrderNo() {
+        return this.orderNo;
+    }
 
-    public Long getLoanId() { return this.loanId; }
+    public Long getLoanId() {
+        return this.loanId;
+    }
 }

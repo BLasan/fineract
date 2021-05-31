@@ -18,29 +18,35 @@
  */
 package org.apache.fineract.infrastructure.exchange.domain;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import org.apache.fineract.portfolio.loanaccount.domain.Loan;
 
 @Entity
 @Table(name = "m_request")
 public class ExchangeIQRequest {
 
-    @Column(name = "id", length = 20, unique = true, nullable = false)
+    @Column(name = "reqId", length = 20, unique = true, nullable = false)
     private Long reqId;
 
     @Column(name = "exchangeId", length = 50, nullable = false)
     private Long exchangeId;
 
     @ManyToOne
-    @JoinTable(name = "m_loan", joinColumns = @JoinColumn(name = "id"))
-    private Long loanId;
+    @JoinColumn(name = "loan_id")
+    private Loan loan;
+    // private Long loanId;
 
     @Column(name = "request", length = 255, nullable = false)
     private byte[] request;
 
-    public ExchangeIQRequest(Long reqId, Long exchangeId, Long loanId, byte[] request) {
+    public ExchangeIQRequest(Long reqId, Long exchangeId, Loan loan, byte[] request) {
         this.reqId = reqId;
         this.exchangeId = exchangeId;
-        this.loanId = loanId;
+        this.loan = loan;
         this.request = request;
     }
 
@@ -48,11 +54,17 @@ public class ExchangeIQRequest {
 
     }
 
-    public Long getLoanId() { return this.loanId; }
+    public Long getLoanId() {
+        return this.loan.getId();
+    }
 
-    public Long getReqId() { return this.reqId; }
+    public Long getReqId() {
+        return this.reqId;
+    }
 
-    public Long getExchangeId() { return this.exchangeId; }
+    public Long getExchangeId() {
+        return this.exchangeId;
+    }
 
     public byte[] getRequest() {
         return request;

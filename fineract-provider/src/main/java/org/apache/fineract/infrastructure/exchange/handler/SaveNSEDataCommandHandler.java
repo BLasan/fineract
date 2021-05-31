@@ -21,27 +21,26 @@ package org.apache.fineract.infrastructure.exchange.handler;
 import javax.transaction.Transactional;
 import org.apache.fineract.commands.annotation.CommandType;
 import org.apache.fineract.commands.handler.NewCommandSourceHandler;
-import org.apache.fineract.infrastructure.exchange.service.ExchangeDataWritePlatformService;
 import org.apache.fineract.infrastructure.core.api.JsonCommand;
 import org.apache.fineract.infrastructure.core.data.CommandProcessingResult;
+import org.apache.fineract.infrastructure.exchange.service.ExchangeDataWritePlatformService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-@CommandType(entity = "IQDATA", action = "SAVE")
-public class SaveExchangeDataCommandHandler implements NewCommandSourceHandler {
+@CommandType(entity = "NSEIQDATA", action = "SAVE")
+public class SaveNSEDataCommandHandler implements NewCommandSourceHandler {
 
-    private final ExchangeDataWritePlatformService writePlatformService;
+    private final ExchangeDataWritePlatformService exchangeDataWritePlatformService;
 
     @Autowired
-    public SaveExchangeDataCommandHandler(final ExchangeDataWritePlatformService writePlatformService) {
-        this.writePlatformService = writePlatformService;
+    public SaveNSEDataCommandHandler(final ExchangeDataWritePlatformService exchangeDataWritePlatformService) {
+        this.exchangeDataWritePlatformService = exchangeDataWritePlatformService;
     }
 
     @Override
     @Transactional
     public CommandProcessingResult processCommand(final JsonCommand command) {
-        return this.writePlatformService.saveBSEData(command.entityId(), command);
+        return this.exchangeDataWritePlatformService.saveNSEData(command.entityId(), command);
     }
-
 }

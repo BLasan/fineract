@@ -23,6 +23,7 @@ import org.apache.fineract.infrastructure.core.exception.AbstractPlatformResourc
 public class ExchangeConfigurationNotFoundException extends AbstractPlatformResourceNotFoundException {
 
     public ExchangeConfigurationNotFoundException(Long configId) {
-        super("error.msg.bse.configuration.identifier.not.found", "Configuration with identifier `" + configId + "` does not exist", configId);
+        super("error.msg.bse.configuration.identifier.not.found", "Configuration with identifier `" + configId + "` does not exist",
+                configId);
     }
 }

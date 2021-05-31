@@ -30,7 +30,7 @@ public class ExchangeConfigurationData {
     private final String env;
 
     public ExchangeConfigurationData(final Integer memberId, final String baseAPIURL, final String password, final String userName,
-                                     final String applyIPOAPI, final String logoutAPI, final String tokenAPI, final String env) {
+            final String applyIPOAPI, final String logoutAPI, final String tokenAPI, final String env) {
         this.memberId = memberId;
         this.password = password;
         this.baseAPIURL = baseAPIURL;
@@ -41,20 +41,36 @@ public class ExchangeConfigurationData {
         this.env = env;
     }
 
-    public Integer getMemberId() { return this.memberId; }
+    public Integer getMemberId() {
+        return this.memberId;
+    }
 
-    public String getUserName() { return this.userName; }
+    public String getUserName() {
+        return this.userName;
+    }
 
-    public String getPassword() { return this.password; }
+    public String getPassword() {
+        return this.password;
+    }
 
-    public String getBaseAPIURL() { return this.baseAPIURL; }
+    public String getBaseAPIURL() {
+        return this.baseAPIURL;
+    }
 
-    public String getApplyIPOAPI() { return this.applyIPOAPI; }
+    public String getApplyIPOAPI() {
+        return this.applyIPOAPI;
+    }
 
-    public String getLogoutAPI() { return this.logoutAPI; }
+    public String getLogoutAPI() {
+        return this.logoutAPI;
+    }
 
-    public String getTokenAPI() { return this.tokenAPI; }
+    public String getTokenAPI() {
+        return this.tokenAPI;
+    }
 
-    public String getEnv() { return this.env; }
+    public String getEnv() {
+        return this.env;
+    }
 
 }

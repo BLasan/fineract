@@ -21,11 +21,10 @@ package org.apache.fineract.infrastructure.exchange.domain;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-
 import org.apache.fineract.infrastructure.core.domain.AbstractPersistableCustom;
 
 @Entity
-@Table(name = "m_bse_configuration")
+@Table(name = "m_exchange_configuration")
 public class ExchangeConfiguration extends AbstractPersistableCustom {
 
     @Column(name = "configkey", length = 50)
@@ -39,7 +38,6 @@ public class ExchangeConfiguration extends AbstractPersistableCustom {
 
     @Column(name = "description", length = 50)
     private String description;
-
 
     public ExchangeConfiguration(String configKey, String value, Long exchangeId, String description) {
         this.configKey = configKey;
@@ -56,11 +54,16 @@ public class ExchangeConfiguration extends AbstractPersistableCustom {
         return this.configKey;
     }
 
-    public String getValue() { return this.value; }
+    public String getValue() {
+        return this.value;
+    }
 
-    public String getDescription() { return this.description; }
+    public String getDescription() {
+        return this.description;
+    }
 
-    public Long getExchangeId() { return this.exchangeId; }
-
+    public Long getExchangeId() {
+        return this.exchangeId;
+    }
 
 }

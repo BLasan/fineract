@@ -27,8 +27,8 @@ public class ExchangeLoginResponseData {
     private final String errorCode;
     private final String message;
 
-    public ExchangeLoginResponseData (final String memberCode, final String loginId, final String branchCode, final String token,
-                                      final String errorCode, final String message) {
+    public ExchangeLoginResponseData(final String memberCode, final String loginId, final String branchCode, final String token,
+            final String errorCode, final String message) {
         this.branchCode = branchCode;
         this.loginId = loginId;
         this.memberCode = memberCode;
@@ -37,15 +37,27 @@ public class ExchangeLoginResponseData {
         this.token = token;
     }
 
-    public String getLoginId() { return this.loginId; }
+    public String getLoginId() {
+        return this.loginId;
+    }
 
-    public String getMemberCode() { return this.memberCode; }
+    public String getMemberCode() {
+        return this.memberCode;
+    }
 
-    public String getToken() { return this.token; }
+    public String getToken() {
+        return this.token;
+    }
 
-    public String getErrorCode() { return this.errorCode; }
+    public String getErrorCode() {
+        return this.errorCode;
+    }
 
-    public String getBranchCode() { return this.branchCode; }
+    public String getBranchCode() {
+        return this.branchCode;
+    }
 
-    public String getMessage() { return this.message; }
+    public String getMessage() {
+        return this.message;
+    }
 }
