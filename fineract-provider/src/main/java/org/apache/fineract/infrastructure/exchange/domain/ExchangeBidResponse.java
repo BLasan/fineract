@@ -20,6 +20,7 @@ package org.apache.fineract.infrastructure.exchange.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -42,7 +43,8 @@ public class ExchangeBidResponse {
     @Column(name = "OrderNo", length = 16)
     private String orderNo;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "response_id", nullable = false)
     private ExchangeIQResponse exchangeIQResponse;
 
     public ExchangeBidResponse() {

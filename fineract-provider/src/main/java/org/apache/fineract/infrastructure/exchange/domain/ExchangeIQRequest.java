@@ -35,10 +35,9 @@ public class ExchangeIQRequest {
     @Column(name = "exchangeId", length = 50, nullable = false)
     private Long exchangeId;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     @JoinColumn(name = "loan_id")
     private Loan loan;
-    // private Long loanId;
 
     @Column(name = "request", length = 255, nullable = false)
     private byte[] request;
