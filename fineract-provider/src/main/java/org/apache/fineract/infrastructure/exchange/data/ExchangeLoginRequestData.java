@@ -16,11 +16,36 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.fineract.infrastructure.exchange.domain;
+package org.apache.fineract.infrastructure.exchange.data;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+public class ExchangeLoginRequestData {
 
-public interface ExchangeConfigurationRepository extends JpaRepository<ExchangeConfiguration, Long>, JpaSpecificationExecutor {
+    private final String memberCode;
+    private final String loginId;
+    private final String ibbsid;
+    private final String password;
+
+    public ExchangeLoginRequestData(final String memberCode, final String loginId, final String ibbsid, final String password) {
+        this.ibbsid = ibbsid;
+        this.memberCode = memberCode;
+        this.password = password;
+        this.loginId = loginId;
+    }
+
+    public String getMemberCode() {
+        return this.memberCode;
+    }
+
+    public String getLoginId() {
+        return this.loginId;
+    }
+
+    public String getPassword() {
+        return this.password;
+    }
+
+    public String getIbbsid() {
+        return this.ibbsid;
+    }
 
 }

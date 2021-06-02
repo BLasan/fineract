@@ -24,15 +24,17 @@ import com.google.gson.JsonObject;
 import java.io.IOException;
 import java.net.http.HttpClient;
 import java.util.Collection;
+import java.util.Date;
 import javax.transaction.Transactional;
 import org.apache.fineract.infrastructure.core.api.JsonCommand;
 import org.apache.fineract.infrastructure.core.data.CommandProcessingResult;
 import org.apache.fineract.infrastructure.core.data.CommandProcessingResultBuilder;
+import org.apache.fineract.infrastructure.core.serialization.DefaultToApiJsonSerializer;
 import org.apache.fineract.infrastructure.core.serialization.FromJsonHelper;
 import org.apache.fineract.infrastructure.exchange.data.ExchangeConfigurationData;
+import org.apache.fineract.infrastructure.exchange.data.ExchangeLoginRequestData;
 import org.apache.fineract.infrastructure.exchange.data.ExchangeLoginResponseData;
-import org.apache.fineract.infrastructure.exchange.domain.ExchangeIQRequest;
-import org.apache.fineract.infrastructure.exchange.domain.ExchangeIQResponse;
+import org.apache.fineract.infrastructure.exchange.domain.*;
 import org.apache.fineract.infrastructure.exchange.exception.ExchangeConfigurationNotFoundException;
 import org.apache.fineract.infrastructure.exchange.exception.ExchangeDataNotFoundException;
 import org.apache.fineract.infrastructure.exchange.exception.ExchangeIPORequestException;
@@ -58,18 +60,29 @@ public class ExchangeDataWritePlatformServiceImpl implements ExchangeDataWritePl
     private JsonElement jsonElement;
     private final HttpClient httpClient;
     private static final ObjectMapper objectMapper;
+    private final ExchangeUserTokenRepositoryWrapper exchangeUserTokenRepositoryWrapper;
     private static final Logger LOG = LoggerFactory.getLogger(ExchangeDataWritePlatformServiceImpl.class);
+    private final DefaultToApiJsonSerializer<ExchangeLoginResponseData> toApiJsonSerializer;
+    private final ExchangeUserTokenData exchangeUserTokenData;
+    private final ExchangeIQResponseRepositoryWrapper exchangeIQResponseRepositoryWrapper;
 
     @Autowired
     public ExchangeDataWritePlatformServiceImpl(final PlatformSecurityContext context,
             final ExchangeConfigurationDataReadPlatformService exchangeConfigurationDataReadPlatformService,
             final ExchangeIQDataReadPlatformService exchangeIQDataReadPlatformService, final FromJsonHelper fromJsonHelper,
-            final ObjectMapper objectMapper) {
+            final ObjectMapper objectMapper, final ExchangeUserTokenRepositoryWrapper exchangeUserTokenRepositoryWrapper,
+            final DefaultToApiJsonSerializer<ExchangeLoginResponseData> toApiJsonSerializer,
+            final ExchangeUserTokenData exchangeUserTokenData,
+            final ExchangeIQResponseRepositoryWrapper exchangeIQResponseRepositoryWrapper) {
         this.context = context;
         this.exchangeConfigurationDataReadPlatformService = exchangeConfigurationDataReadPlatformService;
         this.exchangeIQDataReadPlatformService = exchangeIQDataReadPlatformService;
         this.fromJsonHelper = fromJsonHelper;
         this.httpClient = HttpClient.newHttpClient();
+        this.exchangeUserTokenRepositoryWrapper = exchangeUserTokenRepositoryWrapper;
+        this.toApiJsonSerializer = toApiJsonSerializer;
+        this.exchangeUserTokenData = exchangeUserTokenData;
+        this.exchangeIQResponseRepositoryWrapper = exchangeIQResponseRepositoryWrapper;
     }
 
     static {
@@ -105,7 +118,7 @@ public class ExchangeDataWritePlatformServiceImpl implements ExchangeDataWritePl
             throw new ExchangeDataNotFoundException(command.getGroupId());
         }
 
-        String memberId = exchangeConfigurationData.getMemberId().toString();
+        Long memberId = exchangeConfigurationData.getMemberId();
         String baseAPIURL = exchangeConfigurationData.getBaseAPIURL();
         String password = exchangeConfigurationData.getPassword();
         String userName = exchangeConfigurationData.getUserName();
@@ -113,10 +126,14 @@ public class ExchangeDataWritePlatformServiceImpl implements ExchangeDataWritePl
         String applyIPOAPI = exchangeConfigurationData.getApplyIPOAPI();
         String logoutAPI = exchangeConfigurationData.getLogoutAPI();
         String env = exchangeConfigurationData.getEnv();
-        String loginId = "";
+        String loginId = "mk001";
 
-        String requestBody = String.format("{'memberCode': %s, 'loginid': %s, 'password': %s, 'ibbsid': %s}", memberId, loginId, password,
-                userName);
+        ExchangeLoginRequestData exchangeLoginRequestData = new ExchangeLoginRequestData(memberId.toString(), loginId, "1", password);
+        String requestBody = this.toApiJsonSerializer.serialize(exchangeLoginRequestData);
+
+        // String requestBody = String.format("{'memberCode': %s, 'loginid': %s, 'password': %s, 'ibbsid': %s}",
+        // memberId.toString(), loginId, password,
+        // userName);
 
         JsonObject jsonObject;
 
@@ -127,21 +144,42 @@ public class ExchangeDataWritePlatformServiceImpl implements ExchangeDataWritePl
             // con.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
             // con.setConnectTimeout(5000);
 
-            ExchangeLoginResponseData loginResponseData = (userAuthenticate(baseAPIURL, requestBody, tokenAPI));
+            final boolean isTokenPresent = checkToken(memberId);
+            String errorCode = "";
+            String errorMessage = "";
 
-            // jsonElement = JsonParser.parseString(userAuthenticate(baseAPIURL, con, requestBody));
-            // String memberCode = this.fromJsonHelper.extractStringNamed("membercode", jsonElement);
-            // String token = this.fromJsonHelper.extractStringNamed("token", jsonElement);
-            // String errorCode = this.fromJsonHelper.extractStringNamed("errorcode", jsonElement);
-            // String message = this.fromJsonHelper.extractStringNamed("message", jsonElement);
+            if (isTokenPresent) {
+                LOG.info("Token is not expired !!!");
+            } else {
+                ExchangeLoginResponseData loginResponseData = userAuthenticate(baseAPIURL, requestBody, tokenAPI);
 
-            String errorCode = loginResponseData.getErrorCode();
-            String errorMessage = loginResponseData.getMessage();
-            String memberCode = loginResponseData.getMemberCode();
+                // jsonElement = JsonParser.parseString(userAuthenticate(baseAPIURL, con, requestBody));
+                // String memberCode = this.fromJsonHelper.extractStringNamed("membercode", jsonElement);
+                // String token = this.fromJsonHelper.extractStringNamed("token", jsonElement);
+                // String errorCode = this.fromJsonHelper.extractStringNamed("errorcode", jsonElement);
+                // String message = this.fromJsonHelper.extractStringNamed("message", jsonElement);
 
-            if (!errorCode.equals("0")) {
-                throw new ExchangeUserLoginException(errorCode, memberCode, errorMessage);
+                errorCode = loginResponseData.getErrorCode();
+                errorMessage = loginResponseData.getMessage();
+                String memberCode = loginResponseData.getMemberCode();
+                String token = loginResponseData.getToken();
+                String returnedLoginId = loginResponseData.getLoginId();
+                LOG.info(token);
+
+                if (!errorCode.equals("0") || !errorMessage.equals(" ")) {
+                    throw new ExchangeUserLoginException(errorCode, memberCode, errorMessage);
+                }
+
+                ExchangeUserTokenData exchangeUserTokenData = new ExchangeUserTokenData(memberId.toString(), token, " ", new Date(),
+                        returnedLoginId);
+
+                updateToken(exchangeUserTokenData);
+
             }
+
+            /**
+             * TODO: Get IPO Request Payload
+             */
 
             // String ipoRequestBody = String.format("{'scriptId': %s, 'applicationno': %s, 'category': %s,
             // 'applicantname': %s"
@@ -150,7 +188,7 @@ public class ExchangeDataWritePlatformServiceImpl implements ExchangeDataWritePl
             // + "'bankname': %s, 'location': %s, 'accountnumber_upiid': %s, 'ifsccode': %s, 'referenceno': %s,
             // 'asba_upiid': %s}", 1);
 
-            ExchangeIQResponse exchangeIQResponse = ipoOrder(baseAPIURL, requestBody, tokenAPI);
+            ExchangeIQResponse exchangeIQResponse = ipoOrder(baseAPIURL, requestBody, applyIPOAPI);
 
             errorCode = exchangeIQResponse.getErrorCode();
             errorMessage = exchangeIQResponse.getErrorMessage();
@@ -161,15 +199,17 @@ public class ExchangeDataWritePlatformServiceImpl implements ExchangeDataWritePl
                 throw new ExchangeIPORequestException(errorCode, errorMessage, applicationNo, applicantName);
             }
 
+            saveIQResponse(exchangeIQResponse);
+
         } catch (IOException ioException) {
             LOG.error(ioException.getMessage());
         }
         return new CommandProcessingResultBuilder().withCommandId(command.commandId())
-                .withEntityId(Long.parseLong(exchangeConfigurationData.getMemberId().toString())).build();
+                .withClientId(Long.parseLong(exchangeConfigurationData.getMemberId().toString())).withGroupId(command.getGroupId()).build();
         // return CommandProcessingResult.empty();
     }
 
-    public ExchangeLoginResponseData userAuthenticate(String baseAPIURL, String requestBody, String tokenAPI) throws IOException {
+    private ExchangeLoginResponseData userAuthenticate(String baseAPIURL, String requestBody, String tokenAPI) throws IOException {
         // connection.setDoInput(true);
         // connection.setDoOutput(true);
         // connection.setRequestMethod("POST");
@@ -210,7 +250,7 @@ public class ExchangeDataWritePlatformServiceImpl implements ExchangeDataWritePl
 
     }
 
-    public ExchangeIQResponse ipoOrder(String baseAPIURL, String requestBody, String tokenAPI) throws IOException {
+    private ExchangeIQResponse ipoOrder(String baseAPIURL, String requestBody, String tokenAPI) throws IOException {
         StringEntity requestEntity = new StringEntity(requestBody, ContentType.APPLICATION_JSON);
 
         try (CloseableHttpClient client = HttpClients.createDefault()) {
@@ -227,12 +267,26 @@ public class ExchangeDataWritePlatformServiceImpl implements ExchangeDataWritePl
         }
     }
 
-    // public ExchangeIPORequestData getIPOData() {
-    // return new ExchangeIPORequestData();
-    // }
+    private boolean checkToken(Long memberId) {
+        ExchangeUserTokenData userTokenData = this.exchangeUserTokenRepositoryWrapper.get(memberId);
+        Date todayDate = new Date();
+        if (userTokenData.getToken() == null) {
+            return false;
+        }
 
-    // public ExchangeBidData getBidData() {
-    // return new ExchangeBidData();
-    // }
+        if (userTokenData.getExpires().before(todayDate)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    private void updateToken(ExchangeUserTokenData exchangeUserTokenData) {
+        this.exchangeUserTokenRepositoryWrapper.saveAndFlush(exchangeUserTokenData);
+    }
+
+    private void saveIQResponse(final ExchangeIQResponse exchangeIQResponse) {
+        this.exchangeIQResponseRepositoryWrapper.save(exchangeIQResponse);
+    }
 
 }

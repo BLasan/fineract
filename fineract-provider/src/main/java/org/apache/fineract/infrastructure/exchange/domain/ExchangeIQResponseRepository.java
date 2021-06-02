@@ -21,6 +21,7 @@ package org.apache.fineract.infrastructure.exchange.domain;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
-public interface ExchangeConfigurationRepository extends JpaRepository<ExchangeConfiguration, Long>, JpaSpecificationExecutor {
+public interface ExchangeIQResponseRepository
+        extends JpaRepository<ExchangeIQResponse, Long>, JpaSpecificationExecutor<ExchangeIQResponse> {
 
 }

@@ -23,10 +23,11 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import org.apache.fineract.infrastructure.core.domain.AbstractPersistableCustom;
 
 @Entity
 @Table(name = "m_response")
-public class ExchangeIQResponse {
+public class ExchangeIQResponse extends AbstractPersistableCustom {
 
     @Column(name = "scriptId", length = 10, nullable = false)
     private String scriptId;

@@ -23,11 +23,12 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import org.apache.fineract.infrastructure.core.domain.AbstractPersistableCustom;
 import org.apache.fineract.portfolio.loanaccount.domain.Loan;
 
 @Entity
 @Table(name = "m_request")
-public class ExchangeIQRequest {
+public class ExchangeIQRequest extends AbstractPersistableCustom {
 
     @Column(name = "reqId", length = 20, unique = true, nullable = false)
     private Long reqId;

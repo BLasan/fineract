@@ -20,7 +20,12 @@ package org.apache.fineract.infrastructure.exchange.domain;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
-public interface ExchangeConfigurationRepository extends JpaRepository<ExchangeConfiguration, Long>, JpaSpecificationExecutor {
+public interface ExchangeUserTokenRepository
+        extends JpaRepository<ExchangeUserTokenData, Long>, JpaSpecificationExecutor<ExchangeUserTokenData> {
 
+    @Query("select exchangeUserTokenData from ExchangeUserTokenData exchangeUserTokenData where exchangeUserTokenData.memberId=:memberId")
+    ExchangeUserTokenData getTokenData(@Param("memberId") Long memberId);
 }

@@ -23,10 +23,11 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import org.apache.fineract.infrastructure.core.domain.AbstractPersistableCustom;
 
 @Entity
 @Table(name = "m_bid_response")
-public class ExchangeBidResponse {
+public class ExchangeBidResponse extends AbstractPersistableCustom {
 
     @Column(name = "bidId", unique = true, nullable = false, length = 16)
     private String bidId;

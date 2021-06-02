@@ -18,9 +18,20 @@
  */
 package org.apache.fineract.infrastructure.exchange.domain;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-public interface ExchangeConfigurationRepository extends JpaRepository<ExchangeConfiguration, Long>, JpaSpecificationExecutor {
+@Service
+public class ExchangeIQResponseRepositoryWrapper {
 
+    private final ExchangeIQResponseRepository exchangeIQResponseRepository;
+
+    @Autowired
+    public ExchangeIQResponseRepositoryWrapper(final ExchangeIQResponseRepository exchangeIQResponseRepository) {
+        this.exchangeIQResponseRepository = exchangeIQResponseRepository;
+    }
+
+    public void save(final ExchangeIQResponse exchangeIQResponse) {
+        this.exchangeIQResponseRepository.save(exchangeIQResponse);
+    }
 }
