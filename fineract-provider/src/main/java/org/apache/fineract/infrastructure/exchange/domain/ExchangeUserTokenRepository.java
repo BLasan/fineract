@@ -26,6 +26,6 @@ import org.springframework.data.repository.query.Param;
 public interface ExchangeUserTokenRepository
         extends JpaRepository<ExchangeUserTokenData, Long>, JpaSpecificationExecutor<ExchangeUserTokenData> {
 
-    @Query("select exchangeUserTokenData from ExchangeUserTokenData exchangeUserTokenData where exchangeUserTokenData.memberId=:memberId")
-    ExchangeUserTokenData getTokenData(@Param("memberId") Long memberId);
+    @Query("select exchangeUserTokenData from ExchangeUserTokenData exchangeUserTokenData where exchangeUserTokenData.userName=:userName")
+    ExchangeUserTokenData getTokenData(@Param("userName") String userName);
 }

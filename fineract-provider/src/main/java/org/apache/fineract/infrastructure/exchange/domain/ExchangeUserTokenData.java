@@ -22,45 +22,49 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import org.springframework.data.jpa.domain.AbstractPersistable;
+import org.apache.fineract.infrastructure.core.domain.AbstractPersistableCustom;
 
 @Entity
 @Table(name = "m_exchange_user_token")
-public class ExchangeUserTokenData extends AbstractPersistable {
+public class ExchangeUserTokenData extends AbstractPersistableCustom {
 
-    @Column(name = "memberId", length = 10, unique = true)
-    private String memberId;
+    @Column(name = "username", length = 128)
+    private String userName;
 
-    @Column(name = "token", length = 50)
+    @Column(name = "token", length = 512)
     private String token;
 
-    @Column(name = "tokenType", length = 20)
+    @Column(name = "tokenType", length = 128)
     private String tokenType;
 
-    @Column(name = "expireDate")
-    private Date expires;
+    @Column(name = "expiresIn")
+    private Date expiresIn;
 
-    @Column(name = "loginId", length = 15, unique = true)
-    private String loginId;
+    @Column(name = "issued", length = 128)
+    private String issued;
+
+    @Column(name = "expiryDate")
+    private Date expiryDate;
 
     public ExchangeUserTokenData() {
 
     }
 
-    public ExchangeUserTokenData(String memberId, String token, String tokenType, Date expires, String loginId) {
-        this.memberId = memberId;
+    public ExchangeUserTokenData(String userName, String token, String tokenType, Date expiresIn, String issued, Date expiryDate) {
+        this.userName = userName;
         this.token = token;
         this.tokenType = tokenType;
-        this.expires = expires;
-        this.loginId = loginId;
+        this.expiresIn = expiresIn;
+        this.issued = issued;
+        this.expiryDate = expiryDate;
     }
 
-    public String getLoginId() {
-        return this.loginId;
+    public String getUserName() {
+        return this.userName;
     }
 
-    public String getMemberId() {
-        return this.memberId;
+    public String getIssued() {
+        return this.issued;
     }
 
     public String getToken() {
@@ -71,8 +75,12 @@ public class ExchangeUserTokenData extends AbstractPersistable {
         return this.tokenType;
     }
 
-    public Date getExpires() {
-        return this.expires;
+    public Date getExpiresIn() {
+        return this.expiresIn;
+    }
+
+    public Date getExpiryDate() {
+        return this.expiryDate;
     }
 
 }

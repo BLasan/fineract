@@ -35,8 +35,8 @@ public class ExchangeUserTokenRepositoryWrapper {
         this.exchangeUserTokenRepository.save(exchangeUserTokenData);
     }
 
-    public ExchangeUserTokenData get(Long memberId) {
-        return this.exchangeUserTokenRepository.getTokenData(memberId);
+    public ExchangeUserTokenData get(String userName) {
+        return this.exchangeUserTokenRepository.getTokenData(userName);
     }
 
     public void saveAndFlush(final ExchangeUserTokenData exchangeUserTokenData) {

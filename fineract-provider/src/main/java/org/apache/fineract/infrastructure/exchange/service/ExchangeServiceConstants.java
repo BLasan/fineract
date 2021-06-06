@@ -20,13 +20,15 @@ package org.apache.fineract.infrastructure.exchange.service;
 
 public final class ExchangeServiceConstants {
 
-    public static final String EXCHANGE_CONFIG_USERNAME = "username";
-    public static final String EXCHANGE_CONFIG_PASSWORD = "password";
+    public static final String EXCHANGE_CONFIG_USERNAME = "Username";
+    public static final String EXCHANGE_CONFIG_PASSWORD = "Password";
     public static final String EXCHANGE_CONFIG_BASEAPIURL = "baseurl";
     public static final String EXCHANGE_CONFIG_TOKENAPI = "tokenAPI";
     public static final String EXCHANGE_CONFIG_APPLYIPOAPI = "applyIPOAPI";
     public static final String EXCHANGE_CONFIG_LOGOUTAPI = "logoutAPI";
     public static final String EXCHANGE_CONFIG_ENV = "env";
+    public static final String EXCHANGE_SUBSCRIPTION_ID = "SubscriptionId";
+    public static final String EXCHANGE_SUBSCRIPTION_KEY = "SubscriptionKey";
 
     private ExchangeServiceConstants() {
 

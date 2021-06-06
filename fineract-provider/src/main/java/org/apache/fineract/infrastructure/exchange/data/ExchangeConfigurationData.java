@@ -28,9 +28,12 @@ public class ExchangeConfigurationData {
     private final String logoutAPI;
     private final String tokenAPI;
     private final String env;
+    private final String subscriptionKey;
+    private final String subscriptionId;
 
     public ExchangeConfigurationData(final Long memberId, final String baseAPIURL, final String password, final String userName,
-            final String applyIPOAPI, final String logoutAPI, final String tokenAPI, final String env) {
+            final String applyIPOAPI, final String logoutAPI, final String tokenAPI, final String env, final String subscriptionId,
+            final String subscriptionKey) {
         this.memberId = memberId;
         this.password = password;
         this.baseAPIURL = baseAPIURL;
@@ -39,6 +42,8 @@ public class ExchangeConfigurationData {
         this.logoutAPI = logoutAPI;
         this.tokenAPI = tokenAPI;
         this.env = env;
+        this.subscriptionId = subscriptionId;
+        this.subscriptionKey = subscriptionKey;
     }
 
     public Long getMemberId() {
@@ -71,6 +76,14 @@ public class ExchangeConfigurationData {
 
     public String getEnv() {
         return this.env;
+    }
+
+    public String getSubscriptionKey() {
+        return this.subscriptionKey;
+    }
+
+    public String getSubscriptionId() {
+        return this.subscriptionId;
     }
 
 }

@@ -130,6 +130,7 @@ public class CommandWrapperBuilder {
         this.actionName = "SAVE";
         this.entityName = exchangeType.toUpperCase() + "IQDATA";
         this.entityId = id;
+        this.groupId = id;
         this.href = "/" + exchangeType.toLowerCase() + "Integration/save";
         return this;
     }
