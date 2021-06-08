@@ -20,7 +20,6 @@ package org.apache.fineract.infrastructure.exchange.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import java.io.IOException;
 import java.net.http.HttpClient;
 import java.util.Date;
@@ -119,26 +118,25 @@ public class ExchangeDataWritePlatformServiceImpl implements ExchangeDataWritePl
         // throw new ExchangeDataNotFoundException(command.getGroupId());
         // }
 
-        Long memberId = exchangeConfigurationData.getMemberId();
+        String memberCode = exchangeConfigurationData.getSubscriptionId();
         String baseAPIURL = exchangeConfigurationData.getBaseAPIURL();
         String password = exchangeConfigurationData.getPassword();
-        String userName = exchangeConfigurationData.getUserName();
+        String loginId = exchangeConfigurationData.getUserName();
         String tokenAPI = exchangeConfigurationData.getTokenAPI();
         String applyIPOAPI = exchangeConfigurationData.getApplyIPOAPI();
         String logoutAPI = exchangeConfigurationData.getLogoutAPI();
         String env = exchangeConfigurationData.getEnv();
-        String loginId = "mk001";
         String subscriptionKey = exchangeConfigurationData.getSubscriptionKey();
         String subscriptionId = exchangeConfigurationData.getSubscriptionId();
+        String version = exchangeConfigurationData.getVersion();
 
-        ExchangeLoginRequestData exchangeLoginRequestData = new ExchangeLoginRequestData(memberId.toString(), loginId, "1", password);
-        String requestBody = this.toApiJsonSerializer.serialize(exchangeLoginRequestData);
+        ExchangeLoginRequestData exchangeLoginRequestData = new ExchangeLoginRequestData(subscriptionId, loginId, subscriptionKey,
+                password);
+        String requestBody = this.toApiJsonSerializer.serialize(exchangeLoginRequestData).toLowerCase();
 
         // String requestBody = String.format("{'memberCode': %s, 'loginid': %s, 'password': %s, 'ibbsid': %s}",
         // memberId.toString(), loginId, password,
         // userName);
-
-        JsonObject jsonObject;
 
         try {
             // URL url = new URL(baseAPIURL);
@@ -147,14 +145,14 @@ public class ExchangeDataWritePlatformServiceImpl implements ExchangeDataWritePl
             // con.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
             // con.setConnectTimeout(5000);
 
-            final boolean isTokenPresent = checkToken(userName);
+            final boolean isTokenPresent = checkToken(loginId);
             String errorCode = "";
             String errorMessage = "";
 
             if (isTokenPresent) {
                 LOG.info("Token is not expired !!!");
             } else {
-                ExchangeLoginResponseData loginResponseData = userAuthenticate(baseAPIURL, requestBody, tokenAPI);
+                ExchangeLoginResponseData loginResponseData = userAuthenticate(baseAPIURL, requestBody, tokenAPI, version);
 
                 // jsonElement = JsonParser.parseString(userAuthenticate(baseAPIURL, con, requestBody));
                 // String memberCode = this.fromJsonHelper.extractStringNamed("membercode", jsonElement);
@@ -164,17 +162,16 @@ public class ExchangeDataWritePlatformServiceImpl implements ExchangeDataWritePl
 
                 errorCode = loginResponseData.getErrorCode();
                 errorMessage = loginResponseData.getMessage();
-                String memberCode = loginResponseData.getMemberCode();
+                String responseMemberCode = loginResponseData.getMemberCode();
                 String token = loginResponseData.getToken();
                 String returnedLoginId = loginResponseData.getLoginId();
                 LOG.info(token);
 
                 if (!errorCode.equals("0") || !errorMessage.equals(" ")) {
-                    throw new ExchangeUserLoginException(errorCode, memberCode, errorMessage);
+                    throw new ExchangeUserLoginException(errorCode, responseMemberCode, errorMessage);
                 }
 
-                ExchangeUserTokenData exchangeUserTokenData = new ExchangeUserTokenData(userName, token, " ", new Date(), "bse",
-                        new Date());
+                ExchangeUserTokenData exchangeUserTokenData = new ExchangeUserTokenData(loginId, token, " ", new Date(), "bse", new Date());
 
                 updateToken(exchangeUserTokenData);
 
@@ -191,7 +188,7 @@ public class ExchangeDataWritePlatformServiceImpl implements ExchangeDataWritePl
             // + "'bankname': %s, 'location': %s, 'accountnumber_upiid': %s, 'ifsccode': %s, 'referenceno': %s,
             // 'asba_upiid': %s}", 1);
 
-            ExchangeIQResponse exchangeIQResponse = ipoOrder(baseAPIURL, requestBody, applyIPOAPI);
+            ExchangeIQResponse exchangeIQResponse = ipoOrder(baseAPIURL, requestBody, applyIPOAPI, version);
 
             errorCode = exchangeIQResponse.getErrorCode();
             errorMessage = exchangeIQResponse.getErrorMessage();
@@ -209,11 +206,12 @@ public class ExchangeDataWritePlatformServiceImpl implements ExchangeDataWritePl
             throw new ExchangeUserLoginException("500", "1", "Internal Server Error");
         }
         return new CommandProcessingResultBuilder().withCommandId(command.commandId())
-                .withClientId(Long.parseLong(exchangeConfigurationData.getMemberId().toString())).withGroupId(command.getGroupId()).build();
+                .withClientId(Long.parseLong(exchangeConfigurationData.getUserName())).withGroupId(command.getGroupId()).build();
         // return CommandProcessingResult.empty();
     }
 
-    private ExchangeLoginResponseData userAuthenticate(String baseAPIURL, String requestBody, String tokenAPI) throws IOException {
+    private ExchangeLoginResponseData userAuthenticate(String baseAPIURL, String requestBody, String tokenAPI, String version)
+            throws IOException {
         // connection.setDoInput(true);
         // connection.setDoOutput(true);
         // connection.setRequestMethod("POST");
@@ -241,7 +239,7 @@ public class ExchangeDataWritePlatformServiceImpl implements ExchangeDataWritePl
 
         try (CloseableHttpClient client = HttpClients.createDefault()) {
 
-            HttpPost request = new HttpPost(baseAPIURL + "/" + tokenAPI.toLowerCase());
+            HttpPost request = new HttpPost(baseAPIURL + "/" + version + "/" + tokenAPI.toLowerCase());
             request.setEntity(requestEntity);
 
             CloseableHttpResponse response1 = client.execute(request);
@@ -250,26 +248,19 @@ public class ExchangeDataWritePlatformServiceImpl implements ExchangeDataWritePl
 
             LOG.info(response3);
 
-            String response4 = response1.getEntity().getContent().readAllBytes().toString();
-
-            LOG.info(response4);
-
-            ExchangeLoginResponseData response = client.execute(request,
-                    httpResponse -> objectMapper.readValue(httpResponse.getEntity().getContent().readAllBytes(), ExchangeLoginResponseData.class));
-
-            System.out.println(response.getMessage());
+            ExchangeLoginResponseData response = this.fromJsonHelper.fromJson(response3, ExchangeLoginResponseData.class);
 
             return response;
         }
 
     }
 
-    private ExchangeIQResponse ipoOrder(String baseAPIURL, String requestBody, String tokenAPI) throws IOException {
+    private ExchangeIQResponse ipoOrder(String baseAPIURL, String requestBody, String tokenAPI, String version) throws IOException {
         StringEntity requestEntity = new StringEntity(requestBody, ContentType.APPLICATION_JSON);
 
         try (CloseableHttpClient client = HttpClients.createDefault()) {
 
-            HttpPost request = new HttpPost(baseAPIURL + "/" + tokenAPI);
+            HttpPost request = new HttpPost(baseAPIURL + "/" + version + "/" + tokenAPI);
             request.setEntity(requestEntity);
 
             ExchangeIQResponse response = client.execute(request,

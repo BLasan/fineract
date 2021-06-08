@@ -20,7 +20,6 @@ package org.apache.fineract.infrastructure.exchange.data;
 
 public class ExchangeConfigurationData {
 
-    private final Long memberId;
     private final String userName;
     private final String password;
     private final String baseAPIURL;
@@ -30,11 +29,11 @@ public class ExchangeConfigurationData {
     private final String env;
     private final String subscriptionKey;
     private final String subscriptionId;
+    private final String version;
 
-    public ExchangeConfigurationData(final Long memberId, final String baseAPIURL, final String password, final String userName,
-            final String applyIPOAPI, final String logoutAPI, final String tokenAPI, final String env, final String subscriptionId,
-            final String subscriptionKey) {
-        this.memberId = memberId;
+    public ExchangeConfigurationData(final String baseAPIURL, final String password, final String userName, final String applyIPOAPI,
+            final String logoutAPI, final String tokenAPI, final String env, final String subscriptionId, final String subscriptionKey,
+            final String version) {
         this.password = password;
         this.baseAPIURL = baseAPIURL;
         this.userName = userName;
@@ -44,10 +43,7 @@ public class ExchangeConfigurationData {
         this.env = env;
         this.subscriptionId = subscriptionId;
         this.subscriptionKey = subscriptionKey;
-    }
-
-    public Long getMemberId() {
-        return this.memberId;
+        this.version = version;
     }
 
     public String getUserName() {
@@ -84,6 +80,10 @@ public class ExchangeConfigurationData {
 
     public String getSubscriptionId() {
         return this.subscriptionId;
+    }
+
+    public String getVersion() {
+        return this.version;
     }
 
 }

@@ -29,6 +29,7 @@ public final class ExchangeServiceConstants {
     public static final String EXCHANGE_CONFIG_ENV = "env";
     public static final String EXCHANGE_SUBSCRIPTION_ID = "SubscriptionId";
     public static final String EXCHANGE_SUBSCRIPTION_KEY = "SubscriptionKey";
+    public static final String EXCHANGE_API_VERSION = "version";
 
     private ExchangeServiceConstants() {
 

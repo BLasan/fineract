@@ -20,29 +20,29 @@ package org.apache.fineract.infrastructure.exchange.data;
 
 public class ExchangeLoginResponseData {
 
-    private final String memberCode;
-    private final String loginId;
-    private final String branchCode;
+    private final String membercode;
+    private final String loginid;
+    private final String branchcode;
     private final String token;
-    private final String errorCode;
+    private final String errorcode;
     private final String message;
 
-    public ExchangeLoginResponseData(final String memberCode, final String loginId, final String branchCode, final String token,
-            final String errorCode, final String message) {
-        this.branchCode = branchCode;
-        this.loginId = loginId;
-        this.memberCode = memberCode;
-        this.errorCode = errorCode;
+    public ExchangeLoginResponseData(final String membercode, final String loginid, final String branchcode, final String token,
+            final String errorcode, final String message) {
+        this.branchcode = branchcode;
+        this.loginid = loginid;
+        this.membercode = membercode;
+        this.errorcode = errorcode;
         this.message = message;
         this.token = token;
     }
 
     public String getLoginId() {
-        return this.loginId;
+        return this.loginid;
     }
 
     public String getMemberCode() {
-        return this.memberCode;
+        return this.membercode;
     }
 
     public String getToken() {
@@ -50,11 +50,11 @@ public class ExchangeLoginResponseData {
     }
 
     public String getErrorCode() {
-        return this.errorCode;
+        return this.errorcode;
     }
 
     public String getBranchCode() {
-        return this.branchCode;
+        return this.branchcode;
     }
 
     public String getMessage() {

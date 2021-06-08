@@ -22,11 +22,11 @@ public class ExchangeLoginRequestData {
 
     private final String memberCode;
     private final String loginId;
-    private final String ibbsid;
+    private final String ibbsId;
     private final String password;
 
-    public ExchangeLoginRequestData(final String memberCode, final String loginId, final String ibbsid, final String password) {
-        this.ibbsid = ibbsid;
+    public ExchangeLoginRequestData(final String memberCode, final String loginId, final String ibbsId, final String password) {
+        this.ibbsId = ibbsId;
         this.memberCode = memberCode;
         this.password = password;
         this.loginId = loginId;
@@ -44,8 +44,8 @@ public class ExchangeLoginRequestData {
         return this.password;
     }
 
-    public String getIbbsid() {
-        return this.ibbsid;
+    public String getIbbsId() {
+        return this.ibbsId;
     }
 
 }

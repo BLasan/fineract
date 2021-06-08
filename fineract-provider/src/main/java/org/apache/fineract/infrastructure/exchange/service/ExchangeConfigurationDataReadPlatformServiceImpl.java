@@ -59,6 +59,7 @@ public class ExchangeConfigurationDataReadPlatformServiceImpl implements Exchang
             String env = "";
             String subscriptionId = "";
             String subscriptionKey = "";
+            String version = "";
             while (rs.next()) {
                 String configKey = rs.getString("configkey");
                 String value = rs.getString("value");
@@ -81,10 +82,12 @@ public class ExchangeConfigurationDataReadPlatformServiceImpl implements Exchang
                     subscriptionKey = value;
                 } else if (ExchangeServiceConstants.EXCHANGE_SUBSCRIPTION_ID.equals(configKey)) {
                     subscriptionId = value;
+                } else if (ExchangeServiceConstants.EXCHANGE_API_VERSION.equals(configKey)) {
+                    version = value;
                 }
             }
-            return new ExchangeConfigurationData(memberID, baseAPIURL, password, userName, applyIPOAPI, logoutAPI, tokenAPI, env,
-                    subscriptionId, subscriptionKey);
+            return new ExchangeConfigurationData(baseAPIURL, password, userName, applyIPOAPI, logoutAPI, tokenAPI, env, subscriptionId,
+                    subscriptionKey, version);
         }
     }
 
