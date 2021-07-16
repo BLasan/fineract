@@ -166,6 +166,11 @@ public class LoanTransactionHelper {
         return Utils.performServerGet(requestSpec, responseSpec, GET_LOAN_CHARGES_URL, "");
     }
 
+    public ArrayList getRepayments(final Integer loanId) {
+        final String GET_REPAYMENTS_URL = "/fineract-provider/api/v1/loans/" + loanId + "?command=disburse&" + Utils.TENANT_IDENTIFIER;
+        return Utils.performServerGet(requestSpec, responseSpec, GET_REPAYMENTS_URL, "loanRepaymentScheduleInstallments");
+    }
+
     public HashMap approveLoan(final String approvalDate, final Integer loanID) {
         String loanApprovalCommand = createLoanOperationURL(APPROVE_LOAN_COMMAND, loanID);
         String loanApprovalRequest = getApproveLoanAsJSON(approvalDate);
@@ -205,13 +210,13 @@ public class LoanTransactionHelper {
     }
 
     public HashMap disburseLoanWithPostDatedChecks(final String date, final Integer loanId, final BigDecimal transactionAmount,
-            final Integer installments) {
+            final List<HashMap> postDatedChecks) {
         return performLoanTransaction(createLoanOperationURL(DISBURSE_LOAN_COMMAND, loanId),
-                getDisburseLoanWithPostDatedChecksAsJSON(date, transactionAmount.toString(), installments));
+                getDisburseLoanWithPostDatedChecksAsJSON(date, transactionAmount.toString(), postDatedChecks));
     }
 
     private String getDisburseLoanWithPostDatedChecksAsJSON(final String actualDisbursementDate, final String transactionAmount,
-            final Integer installments) {
+            final List<HashMap> postDatedChecks) {
         final HashMap<String, Object> map = new HashMap<String, Object>();
         map.put("locale", "en");
         map.put("dateFormat", "dd MMMM yyyy");
@@ -221,14 +226,6 @@ public class LoanTransactionHelper {
             map.put("transactionAmount", transactionAmount);
         }
 
-        /**
-         * TODO: Get actual post dated check values.
-         */
-        List<HashMap> postDatedChecks = new ArrayList<>();
-
-        for (int i = 1; i <= installments.intValue(); i++) {
-            addPostDatedChecks(postDatedChecks, i, BigDecimal.valueOf(3000));
-        }
         map.put("postDatedChecks", postDatedChecks);
         LOG.info("Loan Application disburse request : {} ", map);
         return new Gson().toJson(map);
